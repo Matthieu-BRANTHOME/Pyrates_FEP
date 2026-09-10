@@ -1,0 +1,24 @@
+# Cleaned datasets are rebuilt by the notebooks
+data/cleaned/*
+!data/cleaned/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# macOS and Google Drive
+.DS_Store
+.AppleDouble
+Icon?
+._*
+desktop.ini
