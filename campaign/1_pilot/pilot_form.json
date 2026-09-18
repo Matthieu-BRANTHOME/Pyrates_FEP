@@ -1,0 +1,229 @@
+{
+  "name": "Pyrates LLM",
+  "questions": [
+    {
+      "id": "resolution_stage",
+      "tag": {
+        "en": "STAGE",
+        "fr": "STADE"
+      },
+      "label": {
+        "en": "At what stage of resolution is the student?",
+        "fr": "À quel stade de résolution se trouve l'élève ?"
+      },
+      "required": true,
+      "widget": {
+        "type": "RADIO",
+        "label": {
+          "en": "Select one answer. Judge the student's state immediately before the feedback request, disregarding what happens afterwards. The stages are ordered: if two seem to apply, choose the more advanced one reached.",
+          "fr": "Une seule réponse. Évaluez l'état de l'élève immédiatement avant la demande de feedback, sans tenir compte de ce qui suit. Les stades sont ordonnés : si deux semblent s'appliquer, retenez le plus avancé atteint."
+        },
+        "options": [
+          {
+            "value": "S1-NONE",
+            "label": { "en": "No relevant production", "fr": "Aucune production pertinente" },
+            "description": { "en": "Empty editor or containing only the pre-filled code, non-executable content (natural language, pseudo-code), or code unrelated to the level's objective", "fr": "Éditeur vide ou contenant uniquement le code pré-rempli, contenu non exécutable (texte en langue naturelle, pseudo-code), ou code sans rapport avec l'objectif du niveau" }
+          },
+          {
+            "value": "S2-NAIV",
+            "label": { "en": "Naive approach", "fr": "Approche naïve" },
+            "description": { "en": "Use of the level's control functions, movements consistent with the game objective, limiting constraint not yet encountered", "fr": "Utilisation des fonctions de contrôle du niveau, déplacements cohérents avec l'objectif ludique, contrainte limitante non encore rencontrée" }
+          },
+          {
+            "value": "S3-BLOC",
+            "label": { "en": "Limiting constraint encountered", "fr": "Contrainte limitante rencontrée" },
+            "description": { "en": "The naive approach is defeated by the level's limiting constraint, the target concept does not appear in the code", "fr": "L'approche naïve est mise en échec par la contrainte limitante du niveau, le concept cible n'apparaît pas dans le code" }
+          },
+          {
+            "value": "S4-CONC",
+            "label": { "en": "Target concept partially implemented", "fr": "Concept cible implémenté partiellement" },
+            "description": { "en": "The target concept appears in the code but does not work: syntax error, parameter error, incomplete structure", "fr": "Le concept cible apparaît dans le code mais ne fonctionne pas : erreur de syntaxe, erreur de paramétrage, structure incomplète" }
+          },
+          {
+            "value": "S5-OPER",
+            "label": { "en": "Target concept operational", "fr": "Concept cible opérationnel" },
+            "description": { "en": "The target concept is operationalised, the level solution remains incomplete", "fr": "Le concept cible est opérationnalisé, la solution du niveau reste incomplète" }
+          },
+          {
+            "value": "S6-COMP",
+            "label": { "en": "Complete solution", "fr": "Solution complète" },
+            "description": { "en": "Level completed", "fr": "Niveau réussi" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "feedback_invalidity",
+      "tag": {
+        "en": "INVALIDITY",
+        "fr": "INVALIDITÉ"
+      },
+      "label": {
+        "en": "Does this feedback contain incorrect or inapplicable information?",
+        "fr": "Ce feedback contient-il des informations erronées ou inapplicables ?"
+      },
+      "required": true,
+      "widget": {
+        "type": "CHECKBOX",
+        "label": {
+          "en": "Tick every problem present.",
+          "fr": "Cochez tous les problèmes présents."
+        },
+        "options": [
+          {
+            "value": "R0-NONE",
+            "label": { "en": "The content is valid", "fr": "Le contenu est valide" },
+            "description": { "en": "No incorrect or inapplicable information", "fr": "Aucune information erronée ni inapplicable" },
+            "exclusive": true
+          },
+          {
+            "value": "R1-PYTH",
+            "label": { "en": "Incorrect Python content", "fr": "Contenu Python erroné" },
+            "description": { "en": "False language rule, incorrect syntax", "fr": "Règle de langage fausse, syntaxe erronée" }
+          },
+          {
+            "value": "R2-GAME",
+            "label": { "en": "Incompatible with the level's rules", "fr": "Incompatibilité avec les règles du niveau" },
+            "description": { "en": "Function non-existent or unavailable in the level, map incorrectly taken into account, length constraint ignored, concept outside the level's targets", "fr": "Fonction inexistante ou indisponible dans le niveau, carte mal prise en compte, contrainte de longueur ignorée, concept hors cibles" }
+          },
+          {
+            "value": "R3-INEX",
+            "label": { "en": "Non-existent environment element", "fr": "Élément d'environnement inexistant" },
+            "description": { "en": "Refers to a non-existent element of the environment: memo section, interface element (button, etc.)", "fr": "Renvoie à un élément inexistant de l'environnement : section de mémo, élément d'interface (bouton, etc.)" }
+          },
+          {
+            "value": "R4-ACTI",
+            "label": { "en": "Misreading of the student's activity", "fr": "Mauvaise compréhension de l'activité de l'élève" },
+            "description": { "en": "Code wrongly attributed, error mislocated, non-existent error reported, success wrongly asserted, action history misinterpreted", "fr": "Code attribué à tort, erreur mal localisée, erreur inexistante signalée, réussite affirmée à tort, historique des actions mal interprété" }
+          },
+          {
+            "value": "R5-LANG",
+            "label": { "en": "Content in another language", "fr": "Contenu dans une autre langue" },
+            "description": { "en": "Label, instruction or explanation given in a language other than the one used in the game", "fr": "Libellé, instruction ou explication donnée dans une langue différente de celle utilisée dans le jeu" }
+          },
+          {
+            "value": "R6-OTHE",
+            "label": { "en": "Other (please specify)", "fr": "Autre (préciser)" },
+            "description": { "en": "The feedback contains a problem that none of the above categories covers", "fr": "Le feedback présente un problème qu'aucune des catégories ci-dessus ne couvre" },
+            "allowsFreeText": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "feedback_content",
+      "tag": {
+        "en": "CONTENT",
+        "fr": "CONTENU"
+      },
+      "label": {
+        "en": "What does this feedback contain?",
+        "fr": "Que contient ce feedback ?"
+      },
+      "required": true,
+      "widget": {
+        "type": "CHECKBOX",
+        "label": {
+          "en": "Tick every applicable category. Judge only the content, not what the student is expected to infer from it.",
+          "fr": "Cochez toutes les catégories applicables. Ne jugez que le contenu, non ce que l'élève est censé en déduire."
+        },
+        "options": [
+          {
+            "value": "C1-TASK",
+            "label": { "en": "Task explanation", "fr": "Explication de la tâche" },
+            "description": { "en": "States the level's game objective, its constraints, the control functions available or forbidden", "fr": "Explicite l'objectif ludique du niveau, ses contraintes, les fonctions de contrôle disponibles ou interdites" }
+          },
+          {
+            "value": "C2-CONC",
+            "label": { "en": "Programming concept", "fr": "Concept de programmation" },
+            "description": { "en": "Explains or refers to a programming concept: names it, describes it, or points to a memo section", "fr": "Explique ou fait référence à un concept de programmation : le nomme, le décrit, ou renvoie à une section du mémo" }
+          },
+          {
+            "value": "C3-DIAG",
+            "label": { "en": "Error diagnosis", "fr": "Diagnostic d'erreur" },
+            "description": { "en": "Explains why the attempt fails: locates an error, states its nature or its origin", "fr": "Explique pourquoi la tentative échoue : localise une erreur, en indique la nature ou l'origine" }
+          },
+          {
+            "value": "C4-PROC",
+            "label": { "en": "Procedural guidance", "fr": "Indications procédurales" },
+            "description": { "en": "Describes the resolution steps to follow without revealing any part of the solution code", "fr": "Décrit les étapes de résolution à suivre sans révéler de partie du code de la solution" }
+          },
+          {
+            "value": "C5-SOLU",
+            "label": { "en": "Solution code", "fr": "Code solution" },
+            "description": { "en": "Supplies all or part of the solution code: a code block, the exact form of an instruction (control functions excepted)", "fr": "Fournit tout ou partie du code de la solution : bloc de code, forme exacte d'une instruction (hors fonction de contrôle)" }
+          },
+          {
+            "value": "C6-EXAM",
+            "label": { "en": "Illustrating example", "fr": "Exemple illustratif" },
+            "description": { "en": "Gives an example of code that is not part of the level's solution: code about another situation, analogy", "fr": "Donne un exemple de code ne relevant pas de la solution du niveau : code portant sur une autre situation, analogie" }
+          },
+          {
+            "value": "C7-OTHE",
+            "label": { "en": "Other (please specify)", "fr": "Autre (préciser)" },
+            "description": { "en": "The feedback contains something informative that none of the above categories covers", "fr": "Le feedback apporte quelque chose d'informatif qu'aucune des catégories ci-dessus ne couvre" },
+            "allowsFreeText": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "feedback_instruction",
+      "tag": {
+        "en": "INSTRUCTION",
+        "fr": "DIRECTIVE"
+      },
+      "label": {
+        "en": "What instructions does this feedback explicitly give the student?",
+        "fr": "Quelles directives ce feedback donne-t-il explicitement à l'élève ?"
+      },
+      "required": true,
+      "widget": {
+        "type": "CHECKBOX",
+        "label": {
+          "en": "Tick every applicable category. Choose what is explicitly asked for, not what the student did afterwards.",
+          "fr": "Cochez toutes les catégories qui s'appliquent. Choisir ce qui est explicitement demandé, pas ce que l'élève a fait ensuite."
+        },
+        "options": [
+          {
+            "value": "I0-NONE",
+            "label": { "en": "No instruction", "fr": "Aucune directive" },
+            "description": { "en": "The feedback gives the student no explicit instruction", "fr": "Le feedback ne donne aucune directive explicite à l'élève" },
+            "exclusive": true
+          },
+          {
+            "value": "I1-CODE",
+            "label": { "en": "Modify the code as recommended", "fr": "Modifier le code tel que recommandé" },
+            "description": { "en": "Apply code supplied in the feedback (block or in-line) in the editor, or carry out the recommended code changes without any code being explicitly supplied", "fr": "Appliquer dans l'éditeur du code fourni dans le feedback (bloc ou in-line), ou effectuer les modifications de code recommandées sans que du code soit explicitement fourni" }
+          },
+          {
+            "value": "I2-READ",
+            "label": { "en": "Consult the memo", "fr": "Consulter le mémo" },
+            "description": { "en": "Open or read a memo section", "fr": "Ouvrir ou lire une section du mémo" }
+          },
+          {
+            "value": "I3-EXEC",
+            "label": { "en": "Run the code", "fr": "Exécuter du code" },
+            "description": { "en": "Run the program entered in the code editor", "fr": "Exécuter le programme saisi dans l'éditeur de code" }
+          },
+          {
+            "value": "I4-ASSI",
+            "label": { "en": "Ask the digital assistant again", "fr": "Solliciter à nouveau l'assistant numérique" },
+            "description": { "en": "Ask the digital assistant for help again", "fr": "Redemander de l'aide de l'assistant numérique" }
+          },
+          {
+            "value": "I5-REFL",
+            "label": { "en": "Reflect", "fr": "Réfléchir" },
+            "description": { "en": "Asks the student to predict, check a hypothesis, or assess their own approach", "fr": "Demande de prédire, vérifier une hypothèse ou évaluer sa démarche" }
+          },
+          {
+            "value": "I6-OTHE",
+            "label": { "en": "Other (please specify)", "fr": "Autre (préciser)" },
+            "description": { "en": "The feedback gives an instruction that none of the above categories covers", "fr": "Le feedback donne une directive qu'aucune des catégories ci-dessus ne couvre" },
+            "allowsFreeText": true
+          }
+        ]
+      }
+    }
+  ]
+}

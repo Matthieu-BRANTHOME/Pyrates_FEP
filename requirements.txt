@@ -3,3 +3,4 @@ openpyxl>=3.1
 ipykernel>=6.29
 nbclient>=0.10
 nbstripout>=0.7
+scikit-learn>=1.5
