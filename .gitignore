@@ -1,6 +1,8 @@
-# Cleaned datasets are rebuilt by the notebooks
-data/cleaned/*
-!data/cleaned/.gitkeep
+# Cleaned and output datasets are rebuilt by the notebooks
+data/input/cleaned/*
+!data/input/cleaned/.gitkeep
+data/output/*
+!data/output/.gitkeep
 
 # Python
 __pycache__/
