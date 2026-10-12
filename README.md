@@ -18,6 +18,7 @@ notebooks/
   03_coding_grid_pretest.ipynb      pilot game selection, coding grid pretest, inter-rater analysis
   04_full_campaign.ipynb            full campaign: game assignment and coding handoff
   05_full_campaign_analysis.ipynb   full campaign: inter-rater reliability analysis
+  06_llm_annotation.ipynb           annotation of the rest of the corpus by frontier LLMs
 ```
 
 # 1/ Environment Setup
@@ -71,6 +72,7 @@ pip install -r requirements.txt
 | `campaign/1_pilot/pilot_form.pdf` | readable bilingual (EN/FR) rendering of `pilot_form.json`, for review outside the platform |
 | `campaign/1_pilot/pilot_result.csv` | pilot annotation results, one row per (game, trace, expert), input of notebook 03 |
 | `campaign/2_full/full_form.json` | coding form used for the full campaign, referenced by notebook 04 |
+| `campaign/2_full/full_form.pdf` | readable bilingual (EN/FR) rendering of `full_form.json`, for review outside the platform |
 | `campaign/2_full/full_result.csv` | full campaign annotation results, one row per (game, trace, expert), input of notebook 05 |
 
 `data/input/imported/` is versioned so that the notebooks can be replayed from a fresh clone.
@@ -136,6 +138,14 @@ Input `campaign/2_full/full_result.csv`. Same inter-rater reliability analysis a
 (notebook 03, part 3), generalized to 8 experts: each trace is annotated by one of several
 possible expert pairs rather than always the same two, so the pairing is derived per trace
 instead of assumed fixed. Not runnable until the full campaign's coding is complete.
+
+## 3.6/ Notebook 06: LLM annotation
+
+Inputs `data/input/cleaned/cleaned_interaction_traces.csv`, `campaign/2_full/full_form.json`
+and `campaign/2_full/full_result.csv`. Annotates the feedback not coded by the experts with
+frontier LLMs, through a prompt that reproduces the annotators' view on the FEP platform and
+includes few-shot examples taken from the experts' gold standard; the rest of the gold standard
+is used to evaluate each model's agreement with the experts.
 
 # 4/ Development Guidelines
 
