@@ -1,0 +1,618 @@
+{
+  "action_labels": {
+    "STARTED": "Démarré",
+    "ENDED": "Terminé",
+    "RESUMED": "Repris",
+    "RESTARTED": "Redémarré",
+    "LEAVED": "Quitté",
+    "LAUNCHED": "Lancé",
+    "ASKED": "Demandé",
+    "RECEIVED": "Reçu",
+    "DISPLAYED": "Affiché",
+    "COPIED": "Copié",
+    "PASTED": "Collé",
+    "CHANGED": "Modifié"
+  },
+  "object_labels": {
+    "ASSISTANT_HELP": "Aide de l'assistant",
+    "TEACHER_HELP": "Aide de l'enseignant",
+    "CONTENT": "Contenu",
+    "LEVEL": "Niveau {n}",
+    "SESSION_1": "Séance 1",
+    "SESSION_2": "Séance 2",
+    "SESSION_3": "Séance 3",
+    "CODE_EDITOR_SECTION": "Éditeur de code",
+    "ASSISTANT_MESSAGES_SECTION": "Feedback de l'assistant",
+    "EXECUTION_SPEED_SLIDE": "Curseur de vitesse d'exécution",
+    "CONTROL_FUNCTION_SECTION": "Section fonctions de contrôle",
+    "FULLY_EXECUTED_PROGRAM": "Programme correctement exécuté",
+    "LEVEL_COMPLETED_PROGRAM": "Programme terminant le niveau",
+    "LEVEL_LOST_PROGRAM": "Programme faisant perdre le niveau",
+    "GAME_ERROR_PROGRAM": "Programme en erreur (jeu)",
+    "SYNTACTIC_ERROR_PROGRAM": "Programme en erreur (syntaxique)",
+    "SEMANTIC_ERROR_PROGRAM": "Programme en erreur (sémantique)",
+    "TOO_MANY_LINES_ERROR_PROGRAM": "Programme en erreur (trop de lignes)",
+    "USER_STOPPED_PROGRAM": "Programme arrêté par l'utilisateur",
+    "MEMO_SECTION": "Mémo ({parent} > {title})"
+  },
+  "reason_labels": {
+    "LEVEL_LOST_SPIKE_TOUCH": "Chute dans les piques",
+    "LEVEL_LOST_BARREL_EXPLOSION": "Explosion d'un tonneau",
+    "LEVEL_LOST_OTHER_PIRATE_SHOT": "Tir sur un autre pirate"
+  },
+  "reason_labels_never_displayed": {
+    "GAME_ERROR_OPEN_CHEST_LOCATION": "Ouverture du coffre : mauvais emplacement",
+    "GAME_ERROR_OPEN_CHEST_KEY": "Ouverture du coffre : clé manquante",
+    "GAME_ERROR_READ_MESSAGE_LOCATION": "Lecture de message : mauvais emplacement",
+    "GAME_ERROR_WALK_LOCATION": "Déplacement : mauvais emplacement",
+    "GAME_ERROR_NOT_ALLOWED_FUNCTION": "Fonction non autorisée",
+    "GAME_ERROR_FUNCTION_PARAMETERS": "Paramètres de fonction incorrects"
+  },
+  "detail_texts": {
+    "progression": "Progression de la partie : ",
+    "progression_before_run": "Progression de la partie avant exécution : ",
+    "error_message": "Message d'erreur",
+    "executed_code": "Code exécuté",
+    "current_code": "Code courant",
+    "copied_code": "Contenu copié",
+    "pasted_code": "Contenu collé",
+    "empty_editor": "Editeur vide",
+    "display_time": "Temps d'affichage",
+    "speed": "Vitesse d'exécution",
+    "reason": "Raison",
+    "too_many_lines": "Lignes excédentaires",
+    "memo_content": "Contenu du mémo",
+    "memo_model": "Modèle",
+    "memo_example": "Exemple"
+  },
+  "detail_value_formats": {
+    "progression": "{progression}% (valeur entière du champ progression, suivie de \"%\")",
+    "speed": "x{value/10 avec 1 décimale} - ex. value=30 affiche \"x3.0\" (uniquement CHANGED / EXECUTION_SPEED_SLIDE)",
+    "display_time": "{duration}s (uniquement les traces DISPLAYED)",
+    "reason": "libellé de reason_labels (uniquement LAUNCHED / LEVEL_LOST_PROGRAM)",
+    "too_many_lines": "valeur brute du champ value (uniquement LAUNCHED / TOO_MANY_LINES_ERROR_PROGRAM)",
+    "memo_example": "\"Exemple\" s'il n'y a qu'un exemple, sinon \"Exemple 1\", \"Exemple 2\", ...",
+    "trace_title": "{libellé action} | {libellé objet}",
+    "trace_list_row": "AA-MM-JJ hh:mm:ss | N{niveau} | mm:ss (game_time) | {libellé action} | {libellé objet}"
+  },
+  "detail_display_rules": [
+    "Toutes les traces : titre \"{action} | {objet}\" ; \"Progression de la partie : X%\" (libellé \"avant exécution\" pour tout LAUNCHED sauf SYNTACTIC_ERROR_PROGRAM et TOO_MANY_LINES_ERROR_PROGRAM) ; \"Message d'erreur\" si error_message est non vide (quel que soit le type).",
+    "CHANGED / EXECUTION_SPEED_SLIDE : ligne \"Vitesse d'exécution\" = x(value/10).",
+    "DISPLAYED : ligne \"Temps d'affichage\" = {duration}s ; bloc \"Contenu du mémo\" (explication, Modèle, Exemple(s), remarques) si l'objet est une section de mémo reconnue.",
+    "LAUNCHED / LEVEL_LOST_PROGRAM : ligne \"Raison\" (reason_labels) si reason_name est renseignée.",
+    "LAUNCHED / TOO_MANY_LINES_ERROR_PROGRAM : ligne \"Lignes excédentaires\" = value ; les value dernières lignes non vides du code sont surlignées.",
+    "LAUNCHED (tous objets) : bloc \"Code exécuté\" avec numéros de ligne ; si le code est vide : texte \"Editeur vide\". Pour GAME_ERROR_PROGRAM, SYNTACTIC_ERROR_PROGRAM et SEMANTIC_ERROR_PROGRAM, la ligne numéro value est surlignée.",
+    "ASKED (tous objets) : bloc \"Code courant\" avec numéros de ligne ; si vide : \"Editeur vide\".",
+    "RECEIVED : bloc \"Code courant\" = code de la trace ASKED associée (avec numéros de ligne), \"Editeur vide\" si vide ; rien si aucun ASKED associé. Le message du feedback s'affiche dans le panneau \"Contenu feedback\".",
+    "COPIED : bloc \"Contenu copié\" (sans numéros de ligne) si le code est non vide.",
+    "PASTED : bloc \"Contenu collé\" (sans numéros de ligne) si le code est non vide.",
+    "STARTED / RESUMED / RESTARTED / LEAVED / ENDED (objet LEVEL) : uniquement les éléments communs."
+  ],
+  "game_panel_labels": {
+    "objective": "Objectif ludique",
+    "control_functions": "Fonctions de contrôle :",
+    "target_concept": "Concept cible :",
+    "secondary_concept": "Concept secondaire :",
+    "limiting_constraint": "Contrainte limitante :",
+    "constraint_indicators": "Indices de rencontre de la contrainte :",
+    "editor_prefill": "Pré-remplissage de l'éditeur",
+    "expected_solution": "Solution attendue"
+  },
+  "memo": [
+    {
+      "object_name": "BASE_PROGRAM_SECTION",
+      "parent": "Notions de base",
+      "title": "Programme",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Un programme est un texte qui permet de commander un ordinateur. Dans notre cas, il s'agit de contrôler un personnage.",
+        "Ce texte est composé d'instructions compréhensibles par l'ordinateur. Certaines sont spécifiques à ce jeu et permettent de contrôler le personnage (instruction <code>avancer()</code> par exemple), d'autres sont communes à tous les programmes en Python (voir la suite du mémo programmation).",
+        "Une fois rédigé, le programme est exécuté par un interpréteur. Dans notre cas, l'interpréteur Python est intégré dans le site web et est lancé lorsque l'on clique sur le bouton Exécuter."
+      ]
+    },
+    {
+      "object_name": "BASE_ERROR_SECTION",
+      "parent": "Notions de base",
+      "title": "Erreurs",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Les instructions d'un programme doivent être très précises et ne comporter aucune erreur, attention aux fautes de frappe !",
+        "En cas d'erreur, l'interpréteur signale un problème dans la console. Par exemple, la ligne de code erronée <code>avance()</code> provoque l'affichage d'une erreur : « Ligne 1 : le nom 'avance()' n'est pas défini ».",
+        "Il faudra donc modifier le programme à partir de ce message d'erreur, puis relancer l'exécution jusqu'à ce que le programme soit correct."
+      ]
+    },
+    {
+      "object_name": "BASE_STRUCTURE_SECTION",
+      "parent": "Notions de base",
+      "title": "Structuration",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Un programme doit être structuré par des décalages de texte lors de l'utilisation de certaines instructions (<code>if</code>, <code>while</code>, <code>for</code>, etc.). On appelle cela l'indentation du code.",
+        "Si l'indentation est mauvaise, le programme ne réalise pas ce que l'on veut et cela peut même provoquer des erreurs.",
+        "Ces décalages s'effectuent avec la touche tabulation du clavier. A noter que l'éditeur de programme ajoute automatiquement des décalages lors de l'utilisation de certaines instructions."
+      ]
+    },
+    {
+      "object_name": "BASE_COMMENT_SECTION",
+      "parent": "Notions de base",
+      "title": "Commentaires",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Les lignes commençant par <code>#</code> ne sont pas prises en compte par l'interpréteur. Par exemple, la ligne de code <code># Ceci est un commentaire</code> n'a aucun effet.",
+        "Ces lignes permettent de donner des explications dans le programme, on les appelle des commentaires.",
+        "Les commentaires ne sont pas obligatoires mais ils peuvent aider à la compréhension des programmes par les autres programmeurs."
+      ]
+    },
+    {
+      "object_name": "VAR_CREATION_SECTION",
+      "parent": "Variable",
+      "title": "Création",
+      "explanation": "Donne un nom à un espace mémoire qui pourra par la suite contenir des valeurs.",
+      "model": null,
+      "examples": [
+        "ma_variable = 0"
+      ],
+      "remarks": [
+        "Le nom de la variable est choisi par le programmeur, il doit être unique dans le programme et ne doit contenir ni espace ni accent. Dans l'exemple ci-dessus, on crée un espace mémoire (une variable) qui s'appelle <code>ma_variable</code>.",
+        "En Python, une variable doit obligatoirement être initialisée à l'aide de l'opérateur <code>=</code> lors de sa création. Dans l'exemple ci-dessus, on initialise la variable à <code>0</code>."
+      ]
+    },
+    {
+      "object_name": "VAR_MODIFICATION_SECTION",
+      "parent": "Variable",
+      "title": "Modification",
+      "explanation": "Change la valeur contenue dans l'espace mémoire à l'aide de l'opérateur <code>=</code>.",
+      "model": null,
+      "examples": [
+        "var = 5\nvar = 3",
+        "var = 0\nvar = lire_nombre()"
+      ],
+      "remarks": [
+        "Dans le premier exemple, on initialise la variable <code>var</code> à <code>5</code> puis on modifie sa valeur en lui affectant le nombre <code>3</code>.",
+        "Dans le deuxième exemple, on initialise la variable <code>var</code> à <code>0</code> puis on modifie sa valeur en lui affectant le nombre renvoyé par la fonction <code>lire_nombre()</code>."
+      ]
+    },
+    {
+      "object_name": "VAR_USAGE_SECTION",
+      "parent": "Variable",
+      "title": "Utilisation",
+      "explanation": "Met à disposition d'une autre instruction la valeur contenue dans l'espace mémoire.",
+      "model": null,
+      "examples": [
+        "var_1 = 5\nvar_2 = 7\nvar_3 = var_1 + var_2",
+        "var = 8\nsauter_hauteur(var)"
+      ],
+      "remarks": [
+        "Dans le premier exemple, on initialise les variables <code>var_1</code> et <code>var_2</code> puis on assigne <code>var_3</code> avec la somme des valeurs contenues dans les deux premières variables, elle contiendra donc la valeur <code>12</code>.",
+        "Dans le deuxième exemple, on initialise la variable <code>var</code> avec la valeur <code>8</code> puis on utilise la valeur de cette variable comme paramètre d'entrée de la fonction <code>sauter_hauteur()</code>. Cela revient à exécuter <code>sauter_hauteur(8)</code>."
+      ]
+    },
+    {
+      "object_name": "VAR_TYPE_SECTION",
+      "parent": "Variable",
+      "title": "Type",
+      "explanation": "Une variable peut avoir différents types selon la nature des valeurs qu'elle contient. En Python, on trouve (entre autres) :<br>- des nombres entiers<br>- des nombres décimaux<br>- des chaînes de caractères (texte)<br>- des booléens (vrai ou faux).",
+      "model": null,
+      "examples": [
+        "var_1 = 6\nvar_2 = 2.4\nvar_3 = \"Hello world!\"\nvar_4 = True"
+      ],
+      "remarks": [
+        "Le séparateur des nombres décimaux est un point.",
+        "Les chaînes de caractères doivent être entourées par des guillemets <code>\"\"</code>.",
+        "Les variables de type booléen (qui n'existent pas en Scratch) peuvent prendre uniquement les valeurs <code>True</code> (vrai) ou <code>False</code> (faux)."
+      ]
+    },
+    {
+      "object_name": "CONDI_1BRAN_SECTION",
+      "parent": "Conditionnelle",
+      "title": "Conditionnelle à une branche",
+      "explanation": "Permet d'exécuter des instructions si une condition est vraie.",
+      "model": "if condition:\n\tinstructions",
+      "examples": [
+        "ma_var = mesurer_hauteur()\nif ma_var == 3:\n\tcoup()\n\tsauter()"
+      ],
+      "remarks": [
+        "Pour tester une égalité on utilise un double égal <code>==</code>.",
+        "Les instructions dans la branche <code>if</code> (corps) doivent être décalées à l'aide de la touche tabulation."
+      ]
+    },
+    {
+      "object_name": "CONDI_2BRAN_SECTION",
+      "parent": "Conditionnelle",
+      "title": "Conditionnelle à deux branches",
+      "explanation": "Permet d'exécuter des instructions si une condition est vraie et d'autres instructions sinon (si la condition est fausse).",
+      "model": "if condition:\n\tinstructions\nelse:\n\tinstructions",
+      "examples": [
+        "ma_var = mesurer_hauteur()\nif ma_var < 7:\n\ttourner()\n\tavancer()\nelse:\n\tsauter()\n\tcoup()"
+      ],
+      "remarks": [
+        "Les instructions dans les branches <code>if</code> et <code>else</code> (corps) doivent être décalées à l'aide de la touche tabulation."
+      ]
+    },
+    {
+      "object_name": "CONDI_3BRAN_SECTION",
+      "parent": "Conditionnelle",
+      "title": "Conditionnelle à trois branches et plus",
+      "explanation": "Permet d'exécuter des instructions différentes en fonction de différentes conditions.",
+      "model": "if condition:\n\tinstructions\nelif condition:\n\tinstructions\nelse:\n\tinstructions",
+      "examples": [
+        "ma_var = mesurer_hauteur()\nif ma_var == 5:\n\ttourner()\nelif ma_var == 7:\n\tavancer()\n\tsauter()\nelse:\n\tcoup()"
+      ],
+      "remarks": [
+        "Il est possible d'ajouter autant de branches <code>elif</code> que l'on souhaite.",
+        "La branche <code>else</code> n'est pas obligatoire, une conditionnelle peut n'avoir que des branches <code>if</code> et <code>elif</code>.",
+        "Les instructions dans les branches <code>if</code>, <code>elif</code> et <code>else</code> (corps) doivent être décalées à l'aide de la touche tabulation."
+      ]
+    },
+    {
+      "object_name": "FOR_SIMPLE_SECTION",
+      "parent": "Boucle for",
+      "title": "Répétition simple",
+      "explanation": "Permet de répéter des instructions un certain nombre de fois.",
+      "model": "for _ in range(nombre):\n\tinstructions",
+      "examples": [
+        "for _ in range(4):\n\tsauter()\n\tcoup()"
+      ],
+      "remarks": [
+        "Le nombre entre parenthèses dans <code>range(nombre)</code> indique le nombre de répétitions des instructions.",
+        "Les instructions répétées dans la boucle (corps) doivent être décalées à l'aide de la touche tabulation."
+      ]
+    },
+    {
+      "object_name": "FOR_COUNTER_0_SECTION",
+      "parent": "Boucle for",
+      "title": "Répétition avec compteur (commence à zéro)",
+      "explanation": "Permet de répéter des instructions un certain nombre de fois tout en mettant à jour automatiquement une variable compteur qui est initialisée à zéro.",
+      "model": "for compteur in range(nombre):\n\tinstructions",
+      "examples": [
+        "for compteur in range(3):\n\ttirer(compteur)\n\tavancer()"
+      ],
+      "remarks": [
+        "Le nombre entre parenthèses dans <code>range(nombre)</code> indique le nombre de répétitions des instructions.",
+        "La variable <code>compteur</code> est automatiquement initialisée à 0 et automatiquement augmentée de 1 à la fin de chaque tour de boucle (sauf au dernier).",
+        "La variable <code>compteur</code> peut être utilisée dans les instructions répétées dans la boucle."
+      ]
+    },
+    {
+      "object_name": "FOR_COUNTER_N_SECTION",
+      "parent": "Boucle for",
+      "title": "Répétition avec compteur (ne commence pas à zéro)",
+      "explanation": "Permet de répéter des instructions un certain nombre de fois tout en mettant à jour automatiquement une variable compteur.",
+      "model": "for compteur in range(n1,n2):\n\tinstructions",
+      "examples": [
+        "for compteur in range(3,7):\n\tsauter_hauteur(compteur)\n\tcoup()"
+      ],
+      "remarks": [
+        "La variable <code>compteur</code> est automatiquement initialisée à n1 (3 dans l'exemple) et automatiquement augmenté de 1 à la fin de chaque tour de boucle (sauf au dernier).",
+        "Les répétitions s'arrêtent lorsque le compteur atteint n2-1 (6 dans l'exemple : 7-1)."
+      ]
+    },
+    {
+      "object_name": "WHILE_SIMPLE_SECTION",
+      "parent": "Boucle while",
+      "title": "Répétition tant que ...",
+      "explanation": "Permet de répéter des instructions tant qu'une condition est vraie.",
+      "model": "while condition:\n\tinstructions",
+      "examples": [
+        "h = mesurer_hauteur()\nwhile h > 0:\n\tsauter()\n\th = mesurer_hauteur()"
+      ],
+      "remarks": [
+        "La boucle continue de tourner tant que la condition est vraie et elle s'arrête dès qu'elle devient fausse.",
+        "En Python la boucle tourne tant que la condition est vraie, en Scratch la boucle s'arrête quand la condition est vraie.",
+        "Les instructions répétées dans la boucle (corps) doivent être décalées à l'aide de la touche tabulation."
+      ]
+    },
+    {
+      "object_name": "STARTUP_GOAL_SECTION",
+      "parent": "Guide de démarrage",
+      "title": "Objectif du jeu",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Ce jeu met en scène les aventures d'un ou d'une pirate que vous avez choisi.",
+        "Chaque niveau du jeu doit lui permettre d'ouvrir un coffre et d'en récupérer les pièces d'or.",
+        "Le personnage se contrôle à l'aide d'un programme informatique qu'il faut écrire en Python."
+      ]
+    },
+    {
+      "object_name": "STARTUP_OPERATION_SECTION",
+      "parent": "Guide de démarrage",
+      "title": "Fonctionnement",
+      "explanation": "L'écran est divisé en plusieurs zones :",
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Zone A : description des objectifs, des contraintes et des fonctions de contrôle du personnage pour le niveau en cours. Cette zone permet également de naviguer parmi les niveaux terminés.",
+        "Zone B : mémo de programmation expliquant comment programmer en Python. Pour les utilisateurs de Scratch, nous donnons quelques comparaisons qui peuvent aider.",
+        "Zone C : interface graphique du jeu.",
+        "Zone D : panneau de contrôle du programme qui permet de : lancer l'exécution, forcer l'arrêt et contrôler la vitesse d'exécution.",
+        "Zone E : console d'affichage des sorties du programme au cours de son exécution. Cette zone affiche les informations de début et de fin d'exécution, et les éventuelles erreurs de programmation.",
+        "Zone F : éditeur de programme, c'est à cet endroit qu'il faut écrire le code de son programme Python qui va permettre de contrôler le personnage."
+      ]
+    },
+    {
+      "object_name": "STARTUP_SAVE_SECTION",
+      "parent": "Guide de démarrage",
+      "title": "Enregistrement",
+      "explanation": null,
+      "model": null,
+      "examples": [],
+      "remarks": [
+        "Le jeu s'enregistre manuellement lorsque l'on appuie sur le bouton Enregistrer.",
+        "Le jeu s'enregistre également automatiquement au début de chaque niveau.",
+        "Il faut cependant penser à enregistrer avant de quitter (fermeture de l'onglet ou du navigateur Internet).",
+        "L'identifiant de la partie est nécessaire pour reprendre le jeu après l'avoir quitté."
+      ]
+    }
+  ],
+  "levels": [
+    {
+      "level_id": 1,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "droite()",
+        "gauche()",
+        "ouvrir()"
+      ],
+      "target_concept": "Boucle for sans variable de boucle (répétition uniquement)",
+      "secondary_concepts": [],
+      "limiting_constraint": "Le programme ne peut pas dépasser 10 lignes. Il est donc nécessaire d'utiliser une boucle.",
+      "constraint_indicators": [
+        "Erreur de dépassement du nombre de lignes (plus de 10)",
+        "Nombre passé en paramètre d'une fonction de contrôle pour répéter l'instruction plusieurs fois. Ex : avancer(6)",
+        "Plusieurs instructions regroupées sur une même ligne séparées par \";\" ou \",\" pour contourner la limite. Ex : avancer(); avancer()",
+        "Suppression du commentaire pré-rempli pour gagner une ligne",
+        "Répétition exprimée en langage naturel. Ex : avancer 17 fois"
+      ],
+      "expected_solution": "avancer()\ndroite()\navancer()\ngauche()\navancer()\ndroite()\nfor _ in range(16):\n    avancer()\nouvrir()",
+      "other_panel_fields": {
+        "Pré-remplissage de l'éditeur": "# Ecrire le code de son programme ci-dessous\navancer()"
+      },
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level1Screenshot.png",
+        "solution_video_file": "videos/level/level1.mp4"
+      }
+    },
+    {
+      "level_id": 2,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "droite()",
+        "gauche()",
+        "sauter()",
+        "coup()",
+        "ouvrir()"
+      ],
+      "target_concept": "Boucle for sans variable de boucle (répétition uniquement)",
+      "secondary_concepts": [],
+      "limiting_constraint": "Le programme ne peut pas dépasser 14 lignes. Il est donc nécessaire d'utiliser une boucle.",
+      "constraint_indicators": [
+        "Erreur de dépassement du nombre de lignes (plus de 14)",
+        "Nombre passé en paramètre d'une fonction de contrôle pour répéter l'instruction plusieurs fois. Ex : avancer(6)",
+        "Plusieurs instructions regroupées sur une même ligne séparées par \";\" ou \",\" pour contourner la limite. Ex : sauter(); avancer()"
+      ],
+      "expected_solution": "for _ in range(6):\n    sauter()\n    avancer()\navancer()\ngauche()\navancer()\navancer()\nfor _ in range(9):\n    coup()\n    avancer()\navancer()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level2Screenshot.png",
+        "solution_video_file": "videos/level/level2.mp4"
+      }
+    },
+    {
+      "level_id": 3,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "sauter_hauteur(hauteur)",
+        "lire_nombre()",
+        "ouvrir()"
+      ],
+      "target_concept": "Variable",
+      "secondary_concepts": [
+        "Boucle for sans variable de boucle (répétition uniquement)"
+      ],
+      "limiting_constraint": "La hauteur des piles de caisses est aléatoire et change avant chaque exécution. Il faut lire le message dans la bouteille avant chaque pile qui indique sa hauteur. Il est donc nécessaire d'utiliser une variable pour stocker la valeur de ce message afin de sauter à la bonne hauteur un bloc plus loin.",
+      "constraint_indicators": [
+        "Le pirate heurte une pile de hauteur aléatoire (Impossible d'avancer vers cet emplacement) en sautant à une hauteur écrite en dur. Ex : sauter_hauteur(4)",
+        "Le pirate franchit au moins une pile de hauteur aléatoire en sautant à une hauteur écrite en dur (par chance donc), à vérifier sur au moins deux exécutions",
+        "Appel de la fonction sauter_hauteur() sans paramètre devant une pile aléatoire, faute de connaître la hauteur",
+        "L'élève relie la lecture de la bouteille au saut sans créer de variable. Ex : sauter_hauteur(lire_nombre()), sauter_hauteur(lire_nombre), ou sauter_hauteur(hauteur) avec un nom de variable jamais affectée"
+      ],
+      "expected_solution": "sauter_hauteur(4)\navancer()\nsauter_hauteur(3)\navancer()\navancer()\nfor _ in range(4):\n    message = lire_nombre()\n    avancer()\n    sauter_hauteur(message)\n    avancer()\n    avancer()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level3Screenshot.png",
+        "solution_video_file": "videos/level/level3.mp4"
+      }
+    },
+    {
+      "level_id": 4,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "gauche()",
+        "droite()",
+        "lire_chaine()",
+        "ouvrir()"
+      ],
+      "target_concept": "Structure conditionnelle à deux branches (if/else, if/if)",
+      "secondary_concepts": [
+        "Variable",
+        "Boucle for sans variable de boucle (répétition uniquement)"
+      ],
+      "limiting_constraint": "L'emplacement du coffre et de la clé sont aléatoires et changent avant chaque exécution. Il faut lire les messages dans les bouteilles qui indiquent le chemin à suivre (gauche ou droite) à chaque étage. Il est donc nécessaire d'utiliser une conditionnelle afin de s'orienter correctement. Le fait de tomber dans les piques fait perdre puis recommencer le niveau.",
+      "constraint_indicators": [
+        "Le pirate descend d'au moins deux plateformes en suivant uniquement une séquence de directions écrites en dur. Ex : gauche(), avancer(), droite(). À vérifier sur au moins deux exécutions",
+        "Le pirate tombe dans les piques (niveau perdu) en suivant une séquence fixe de directions écrites en dur",
+        "Le résultat de la lecture de la bouteille est passé directement en paramètre à une fonction de contrôle, sans créer de variable. Ex : avancer(lire_chaine()), avancer(lire_chaine)",
+        "Le message lu dans une variable est passé en paramètre à une fonction de contrôle. Ex : avancer(message), gauche(message) après message = lire_chaine()",
+        "Le message lu dans une variable est appelé comme s'il était une fonction. Ex : message() après message = lire_chaine()"
+      ],
+      "expected_solution": "avancer()\nfor _ in range(5):\n    message = lire_chaine()\n    if message == \"gau\":\n        gauche()\n    else:\n        droite()\n    avancer()\n    avancer()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level4Screenshot.png",
+        "solution_video_file": "videos/level/level4.mp4"
+      }
+    },
+    {
+      "level_id": 5,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "sauter()",
+        "sauter_haut()",
+        "mesurer_hauteur()",
+        "ouvrir()"
+      ],
+      "target_concept": "Structure conditionnelle à trois branches (if/elif/else, if/if/else, if/if/if)",
+      "secondary_concepts": [
+        "Variable",
+        "Boucle for sans variable de boucle (répétition uniquement)"
+      ],
+      "limiting_constraint": "Sur la plateforme supérieure, la hauteur des piles de caisses est aléatoire et change avant chaque exécution. Il faut mesurer la hauteur de chaque pile puis utiliser la fonction de contrôle adaptée en fonction de la hauteur obtenue. Il est donc nécessaire d'utiliser une conditionnelle afin de choisir la fonction de contrôle adéquate. Le fait de tomber dans les piques fait perdre puis recommencer le niveau.",
+      "constraint_indicators": [
+        "Le pirate heurte une pile de hauteur aléatoire (Impossible d'avancer vers cet emplacement) en sautant avec une suite fixe de avancer(), sauter() et sauter_haut()",
+        "Le pirate franchit au moins deux piles de hauteur aléatoire en sautant avec une suite fixe de avancer(), sauter() et sauter_haut() (par chance donc), à vérifier sur au moins deux exécutions",
+        "Le résultat de la mesure de hauteur est passé directement en paramètre à une fonction de saut, sans créer de variable. Ex : sauter_haut(mesurer_hauteur()), sauter_haut(mesurer_hauteur)",
+        "La hauteur mesurée est passée en paramètre à une fonction de saut qui n'en prend pas. Ex : sauter_haut(hauteur) après hauteur = mesurer_hauteur()",
+        "Utilisation de la fonction sauter_hauteur() (non autorisée à ce niveau) pour sauter à la hauteur mesurée. Ex : sauter_hauteur(hauteur) après hauteur = mesurer_hauteur()"
+      ],
+      "expected_solution": "avancer()\nsauter_haut()\nfor _ in range(5):\n    hauteur = mesurer_hauteur()\n    if hauteur == 0:\n        avancer()\n    elif hauteur == 1:\n        sauter()\n    else:\n        sauter_haut()\n    avancer()\n    avancer()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level5Screenshot.png",
+        "solution_video_file": "videos/level/level5.mp4"
+      }
+    },
+    {
+      "level_id": 6,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "sauter_hauteur(hauteur)",
+        "ouvrir()"
+      ],
+      "target_concept": "Boucle for avec variable de boucle (commence à zéro)",
+      "secondary_concepts": [],
+      "limiting_constraint": "Le programme ne doit pas dépasser 4 lignes et la hauteur des poteaux croît progressivement dans la grotte. Il est donc nécessaire d'utiliser une boucle et la variable de boucle.",
+      "constraint_indicators": [
+        "Erreur de dépassement du nombre de lignes (plus de 4) avec une suite de sauts de hauteurs croissantes écrites en dur. Ex : avancer(), sauter_hauteur(1), avancer(), sauter_hauteur(2), avancer(), sauter_hauteur(3)",
+        "Plusieurs instructions regroupées sur une même ligne séparées par \";\" ou \",\" pour contourner la limite. Ex : avancer(); sauter_hauteur(1); avancer(); sauter_hauteur(2); avancer(); sauter_hauteur(3)",
+        "Le pirate heurte un poteau (Impossible d'avancer vers cet emplacement) parce que la hauteur de saut est écrite en dur dans la boucle. Ex : for _ in range(6): avancer(); sauter_hauteur(1)",
+        "Appel de la fonction sauter_hauteur() sans paramètre dans une boucle, faute de pouvoir exprimer une hauteur qui change",
+        "Usage d'un nom de variable non affectée comme hauteur de saut dans la boucle. Ex : sauter_hauteur(hauteur), sauter_hauteur(compteur)",
+        "Tentative d'exprimer une suite de hauteurs dans un seul appel ou une seule variable. Ex : sauter_hauteur(0;5), sauter_hauteur(1),(2),(3), compteur = 0-5, ma_var = 1,2,3,4,5"
+      ],
+      "expected_solution": "for compteur in range(6):\n    sauter_hauteur(compteur)\n    avancer()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level6Screenshot.png",
+        "solution_video_file": "videos/level/level6.mp4"
+      }
+    },
+    {
+      "level_id": 7,
+      "objective": "Tirer sur toutes les noix de coco puis sur le coffre pour l'ouvrir.",
+      "control_functions": [
+        "tourner()",
+        "tirer(distance)"
+      ],
+      "target_concept": "Boucle for avec variable de boucle (ne commence pas à zéro)",
+      "secondary_concepts": [],
+      "limiting_constraint": "Le programme ne doit pas dépasser 5 lignes et les noix de coco apparaissent par séries alternativement à droite puis à gauche, leur nombre augmentant à chaque fois. Il est donc nécessaire d'utiliser une boucle et la variable de boucle. Un autre pirate se place systématiquement derrière la dernière noix, le fait de tirer sur ce pirate fait perdre puis recommencer le niveau.",
+      "constraint_indicators": [
+        "La boucle tire à une distance qui commence à zéro, ce qui provoque une erreur dès le premier tour. Ex : for compteur in range(4): tirer(compteur) (Le paramètre de la fonction tirer doit être un nombre entier compris entre 1 et 9)",
+        "Erreur de dépassement du nombre de lignes (plus de 5) avec une suite de tirs à distances croissantes écrites en dur. Ex : tirer(2), tourner(), tirer(3), tourner(), tirer(4), tourner()",
+        "Plusieurs instructions regroupées sur une même ligne séparées par \";\" ou \",\" pour contourner la limite. Ex : tirer(2); tourner(); tirer(3); tourner(); tirer(4); tourner(); tirer(5)"
+      ],
+      "expected_solution": "for compteur in range(2, 9):\n    tirer(compteur)\n    tourner()\ntirer(3)",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level7Screenshot.png",
+        "solution_video_file": "videos/level/level7.mp4"
+      }
+    },
+    {
+      "level_id": 8,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "control_functions": [
+        "avancer()",
+        "gauche()",
+        "droite()",
+        "coup()",
+        "detecter_obstacle()",
+        "ouvrir()"
+      ],
+      "target_concept": "Boucle while",
+      "secondary_concepts": [
+        "Variable",
+        "Boucle for sans variable de boucle (répétition uniquement)"
+      ],
+      "limiting_constraint": "La solidité du tonneau (nombre dans le cercle) est aléatoire et change avant chaque exécution. Une fois le tonneau détruit, de la dynamite apparait. Il ne faut pas donner de coup dans cette dynamite sous peine d'une explosion qui fait perdre puis recommencer le niveau. Le nombre de pots ainsi que l'emplacement du coffre sont aléatoires et changent avant chaque exécution. Il est donc nécessaire d'utiliser une boucle while et la fonction de détection d'obstacle.",
+      "constraint_indicators": [
+        "Le pirate se heurte au tonneau ou à un pot encore intact (Impossible d'avancer vers cet emplacement) parce que le nombre de coups écrit en dur est insuffisant. Ex : for _ in range(5): coup()",
+        "Explosion de la dynamite (niveau perdu) parce que le nombre de coups écrit en dur est excessif. Ex : for _ in range(12): coup()",
+        "Le pirate dépasse le tonneau avec un nombre de coups écrit en dur (par chance donc), à vérifier sur au moins deux exécutions",
+        "Le résultat de la détection est passé directement en paramètre à coup() (sans variable), faute de pouvoir en faire une condition de répétition. Ex : coup(detecter_obstacle()), coup(detecter_obstacle)",
+        "Le résultat de la détection, stocké dans une variable, est passé en paramètre à coup(). Ex : coup(obstacle) après obstacle = detecter_obstacle()",
+        "Boucle for avec range() vide, faute de connaître le nombre de répétitions. Ex : for _ in range(): coup()",
+        "Test de detecter_obstacle() placé dans une boucle for à nombre fixe de tours, au lieu d'une condition de répétition. Ex : for _ in range(30): if detecter_obstacle() == True: coup()"
+      ],
+      "expected_solution": "avancer()\nobstacle = detecter_obstacle()\nwhile obstacle == True:\n    coup()\n    obstacle = detecter_obstacle()\nfor _ in range(3):\n    avancer()\ndroite()\nfor _ in range(5):\n    avancer()\nobstacle = detecter_obstacle()\nwhile obstacle == True:\n    coup()\n    avancer()\n    obstacle = detecter_obstacle()\nouvrir()",
+      "other_panel_fields": {},
+      "map": {
+        "ascii": null,
+        "legend": null,
+        "random_elements": null,
+        "screenshot_file": "img/level/level8Screenshot.png",
+        "solution_video_file": "videos/level/level8.mp4"
+      }
+    }
+  ],
+  "feedback_markup": {
+    "in_line": "Texte entre <in_line>...</in_line> : rendu comme un petit badge de code en police monospace sur fond gris (le texte est affiché sans les balises ; d'éventuels accents graves ` autour de la balise sont supprimés ; les espaces multiples sont réduits à un).",
+    "block": "Texte entre <block>...</block> : rendu comme un bloc de code Python avec coloration syntaxique, SANS numéros de ligne, sur sa propre ligne.",
+    "memo": "Texte entre <memo>...</memo> : rendu comme un badge bleu (fond #0d6efd, texte blanc, gras) contenant le texte tel quel (espaces réduits). Ce badge n'est PAS cliquable et ne renvoie à aucune section du mémo : c'est uniquement du texte (le nom de la section écrit par l'assistant).",
+    "feedback": "Les balises <feedback> et <feedback_message> sont supprimées (leur contenu reste visible). Le bloc <feedback_caractéristiques>...</feedback_caractéristiques> est supprimé avec son contenu (invisible pour l'expert). Le reste est rendu en Markdown (gras, listes à puces/numérotées...), un simple retour à la ligne devenant un saut de ligne. Les séquences littérales \"\\n\" et \"\\t\" sont converties en vrai retour à la ligne / tabulation, et un éventuel caractère invisible en tête de message est supprimé.",
+    "lost_emoji_placeholder": "Toute suite de 3 \"?\" consécutifs ou plus, hors des balises <in_line> et <block>, est remplacée par 🙂 : dans les données source, les emojis ont été remplacés par des \"?\" (problème d'encodage upstream, irrécupérable)."
+  },
+  "rendering_rules": {
+    "trace_order": "date croissante (précision à la milliseconde), puis sourceTraceId croissant (identifiant de la trace dans le CSV source) en cas d'égalité. La case \"Tous niveaux\" filtre seulement par levelId (décochée : uniquement les traces du niveau sélectionné).",
+    "asked_received_pairing": "Les traces sont triées comme ci-dessus ; chaque ASKED/ASSISTANT_HELP est mis en attente par partie (game_id). Chaque RECEIVED/ASSISTANT_HELP est associé au dernier ASKED en attente du MÊME niveau (level_id), sinon au dernier ASKED en attente quel que soit le niveau, puis ce ASKED est consommé (un ASKED ne sert qu'une fois). Un RECEIVED sans ASKED en attente n'a pas de requête associée.",
+    "feedback_counter": "\"Contenu feedback ({current}/{total})\" : current = rang (à partir de 1) du feedback sélectionné parmi tous les RECEIVED/ASSISTANT_HELP de la PARTIE entière (tous niveaux confondus), dans l'ordre de tri des traces ; total = nombre total de feedbacks de la partie. Le compteur ne dépend pas de la case \"Tous niveaux\".",
+    "hidden_trace_types_note": "Aucun filtrage par type : toutes les lignes du CSV deviennent des traces et sont listées. Seul le filtre par niveau (case \"Tous niveaux\") peut masquer des traces."
+  }
+}

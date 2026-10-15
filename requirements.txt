@@ -4,3 +4,7 @@ ipykernel>=6.29
 nbclient>=0.10
 nbstripout>=0.7
 scikit-learn>=1.5
+anthropic>=1.14
+openai>=3.31
+typesafe-sdk>=0.7
+python-dotenv>=1.2

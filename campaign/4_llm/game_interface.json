@@ -1,0 +1,594 @@
+{
+  "level_panels": [
+    {
+      "level_id": 1,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 10 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "gauche()",
+          "description": "se tourner du côté gauche."
+        },
+        {
+          "usage": "droite()",
+          "description": "se tourner du côté droit."
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 2,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 14 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "gauche()",
+          "description": "se tourner du côté gauche."
+        },
+        {
+          "usage": "droite()",
+          "description": "se tourner du côté droit."
+        },
+        {
+          "usage": "sauter()",
+          "description": "sauter la hauteur d'un bloc puis avancer d'un bloc."
+        },
+        {
+          "usage": "coup()",
+          "description": "donner un coup de sabre."
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 3,
+      "objective": "Ramasser la clé puis ouvrir le coffre (il faut avancer pour le voir). La hauteur des piles de caisses est aléatoire et change à chaque exécution. Il faut donc lire le message dans la bouteille avant chaque pile qui indique sa hauteur.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 14 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "sauter_hauteur(hauteur)",
+          "description": "sauter une hauteur comprise en 0 et 5 blocs puis avancer d'un bloc. Sauter une hauteur de 0 revient à avancer.",
+          "example": "sauter_hauteur(3)"
+        },
+        {
+          "usage": "lire_nombre()",
+          "description": "renvoie le message contenu dans la bouteille sur laquelle on est positionné. Ce message est un nombre entier compris entre 1 et 5.",
+          "example": "message = lire_nombre()"
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 4,
+      "objective": "Ramasser la clé puis ouvrir le coffre (il faut descendre pour le voir). L'emplacement du coffre et de la clé sont aléatoires et changent à chaque exécution. Il faut donc lire les messages dans les bouteilles qui indiquent le chemin à suivre (gauche ou droite) à chaque étage.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 14 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "gauche()",
+          "description": "se tourner du côté gauche."
+        },
+        {
+          "usage": "droite()",
+          "description": "se tourner du côté droit."
+        },
+        {
+          "usage": "lire_chaine()",
+          "description": "renvoie le message contenu dans la bouteille sur laquelle on est positionné. Ce message est une chaîne de caractères : \"gau\" ou \"droi\".",
+          "example": "message = lire_chaine()"
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 5,
+      "objective": "Ramasser la clé puis ouvrir le coffre. Sur la plateforme supérieure, la hauteur des piles de caisses est aléatoire et change à chaque exécution.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 18 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "sauter()",
+          "description": "sauter la hauteur d'un bloc puis avancer d'un bloc."
+        },
+        {
+          "usage": "sauter_haut()",
+          "description": "sauter la hauteur de deux blocs puis avancer d'un bloc."
+        },
+        {
+          "usage": "mesurer_hauteur()",
+          "description": "renvoie la hauteur des blocs situés devant soi. Cette hauteur est un nombre entier compris entre 0 et 2.",
+          "example": "hauteur = mesurer_hauteur()"
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 6,
+      "objective": "Ramasser la clé puis ouvrir le coffre.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 4 lignes.",
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "sauter_hauteur(hauteur)",
+          "description": "sauter une hauteur comprise en 0 et 5 blocs puis avancer d'un bloc. Sauter une hauteur de 0 revient à avancer.",
+          "example": "sauter_hauteur(3)"
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    },
+    {
+      "level_id": 7,
+      "objective": "Tirer sur les différentes séries de noix de coco qui apparaissent des deux côtés puis, à la fin, sur le coffre. Il ne faut jamais atteindre l'autre pirate. Il est possible d'atteindre plusieurs noix de coco à l'aide d'une seule balle.",
+      "constraints": "Dans ce niveau votre programme ne doit pas dépasser 5 lignes.",
+      "control_functions": [
+        {
+          "usage": "tourner()",
+          "description": "se tourner de l'autre côté."
+        },
+        {
+          "usage": "tirer(distance)",
+          "description": "tirer une balle avec le pistolet à une distance comprise entre 1 et 9 blocs.",
+          "example": "tirer(3)"
+        }
+      ]
+    },
+    {
+      "level_id": 8,
+      "objective": "Ramasser la clé puis ouvrir le coffre. La solidité du tonneau (nombre dans le cercle), le nombre de pots ainsi que l'emplacement du coffre sont aléatoires et changent à chaque exécution. Ne pas donner de coup dans le tonneau lorsque la dynamite est apparente sous peine d'explosion.",
+      "constraints": null,
+      "control_functions": [
+        {
+          "usage": "avancer()",
+          "description": "avancer d'un bloc."
+        },
+        {
+          "usage": "gauche()",
+          "description": "se tourner du côté gauche."
+        },
+        {
+          "usage": "droite()",
+          "description": "se tourner du côté droit."
+        },
+        {
+          "usage": "coup()",
+          "description": "donner un coup de sabre."
+        },
+        {
+          "usage": "detecter_obstacle()",
+          "description": "detecter un obstacle. Renvoie True si un obstacle se trouve devant soi et False sinon. Le coffre n'est pas un obstacle.",
+          "example": "obstacle = detecter_obstacle()"
+        },
+        {
+          "usage": "ouvrir()",
+          "description": "ouvrir le coffre s'il se trouve devant soi (ou à notre emplacement) et si on en possède la clé."
+        }
+      ]
+    }
+  ],
+  "programming_memo": {
+    "title": "Mémo programmation",
+    "labels": {
+      "utility": "Utilité",
+      "model": "Modèle",
+      "example": "Exemple",
+      "copy_button": "Copier"
+    },
+    "categories": [
+      {
+        "category": "Notions de base",
+        "summary": "Notions essentielles pour débuter",
+        "utility": "Quelques notions essentielles qui permettent de débuter la programmation en Python.",
+        "sections": [
+          {
+            "object_name": "BASE_PROGRAM_SECTION",
+            "title": "Programme",
+            "description": null,
+            "examples": [],
+            "remarks": [
+              "Un programme est un texte qui permet de commander un ordinateur. Dans notre cas, il s'agit de contrôler un personnage.",
+              "Ce texte est composé d'instructions compréhensibles par l'ordinateur. Certaines sont spécifiques à ce jeu et permettent de contrôler le personnage (instruction avancer() par exemple), d'autres sont communes à tous les programmes en Python (voir la suite du mémo programmation).",
+              "Une fois rédigé, le programme est exécuté par un interpréteur. Dans notre cas, l'interpréteur Python est intégré dans le site web et est lancé lorsque l'on clique sur le bouton [Exécuter]"
+            ]
+          },
+          {
+            "object_name": "BASE_ERROR_SECTION",
+            "title": "Erreurs",
+            "description": null,
+            "examples": [],
+            "remarks": [
+              "Les instructions d'un programme doivent être très précises et ne comporter aucune erreur, attention aux fautes de frappe !",
+              "En cas d'erreur, l'interpréteur signale un problème dans la console. Par exemple, la ligne de code erronée avance() provoque l'affichage d'une erreur : > Ligne 1 : le nom 'avance()' n'est pas défini",
+              "Il faudra donc modifier le programme à partir de ce message d'erreur, puis relancer l'exécution jusqu'à ce que le programme soit correct."
+            ]
+          },
+          {
+            "object_name": "BASE_STRUCTURE_SECTION",
+            "title": "Structuration",
+            "description": null,
+            "examples": [],
+            "remarks": [
+              "Un programme doit être structuré par des décalages de texte lors de l’utilisation de certaines instructions (if, while, for, etc.). On appelle cela l'indentation du code.",
+              "Si l'indentation est mauvaise, le programme ne réalise pas ce que l'on veut et cela peut même provoquer des erreurs.",
+              "Ces décalages s’effectuent avec la touche tabulation du clavier : [image] A noter que l'éditeur de programme ajoute automatiquement des décalages lors de l'utilisation de certaines instructions."
+            ]
+          },
+          {
+            "object_name": "BASE_COMMENT_SECTION",
+            "title": "Commentaires",
+            "description": null,
+            "examples": [],
+            "remarks": [
+              "Les lignes commençant par # ne sont pas prises en compte par l’interpréteur. Par exemple, la ligne de code # Ceci est un commentaire n'a aucun effet.",
+              "Ces lignes permettent de donner des explications dans le programme, on les appelle des commentaires.",
+              "Les commentaires ne sont pas obligatoires mais ils peuvent aider à la compréhension des programmes par les autres programmeurs."
+            ]
+          }
+        ]
+      },
+      {
+        "category": "Variable",
+        "summary": "Garder des informations en mémoire",
+        "utility": "Permet de garder en mémoire des informations au cours de l’exécution d'un programme.",
+        "sections": [
+          {
+            "object_name": "VAR_CREATION_SECTION",
+            "title": "Création",
+            "description": "Donne un nom à un espace mémoire qui pourra par la suite contenir des valeurs.",
+            "examples": [
+              {
+                "scratch": "[image du bloc Scratch]",
+                "python": "ma_variable = 0"
+              }
+            ],
+            "remarks": [
+              "Le nom de la variable est choisi par le programmeur, il doit être unique dans le programme et ne doit contenir ni espace ni accent. Dans l'exemple ci-dessus, on crée un espace mémoire (une variable) qui s'appelle ma_variable.",
+              "En Python, une variable doit obligatoirement être initialisée à l'aide de l'opérateur = lors de sa création. Dans l'exemple ci-dessus, on initialise la variable à 0."
+            ]
+          },
+          {
+            "object_name": "VAR_MODIFICATION_SECTION",
+            "title": "Modification",
+            "description": "Change la valeur contenue dans l'espace mémoire à l'aide de l'opérateur =.",
+            "examples": [
+              {
+                "scratch": "mettre [var v] à [5]\nmettre [var v] à [3]",
+                "python": "var = 5\nvar = 3"
+              },
+              {
+                "scratch": "mettre [var v] à [0]\nmettre [var v] à (lire_nombre::sensing)",
+                "python": "var = 0\nvar = lire_nombre()"
+              }
+            ],
+            "remarks": [
+              "Dans le premier exemple, on initialise la variable var à 5 puis on modifie sa valeur en lui affectant le nombre 3.",
+              "Dans le deuxième exemple, on initialise la variable var à 0 puis on modifie sa valeur en lui affectant le nombre renvoyé par la fonction lire_nombre()."
+            ]
+          },
+          {
+            "object_name": "VAR_USAGE_SECTION",
+            "title": "Utilisation",
+            "description": "Met à disposition d'une autre instruction la valeur contenue dans l'espace mémoire.",
+            "examples": [
+              {
+                "scratch": "mettre [var_1 v] à [5]\nmettre [var_2 v] à [7]\nmettre [var_3 v] à ((var_1)+(var_2))",
+                "python": "var_1 = 5\nvar_2 = 7\nvar_3 = var_1 + var_2"
+              },
+              {
+                "scratch": "mettre [var v] à [8]\nsauter_hauteur (var)::motion",
+                "python": "var = 8\nsauter_hauteur(var)"
+              }
+            ],
+            "remarks": [
+              "Dans le premier exemple, on initialise les variables var_1 et var_2 puis on assigne var_3 avec la somme des valeurs contenues dans les deux premières variables, elle contiendra donc la valeur 12.",
+              "Dans le deuxième exemple, on initialise la variable var avec la valeur 8 puis on utilise la valeur de cette variable comme paramètre d'entrée de la fonction sauter_hauteur(). Cela revient à exécuter sauter_hauteur(8)."
+            ]
+          },
+          {
+            "object_name": "VAR_TYPE_SECTION",
+            "title": "Type",
+            "description": "Une variable peut avoir différents types selon la nature des valeurs qu'elle contient. En Python, on trouve (entre autres) : \n- des nombres entiers\n- des nombres décimaux\n- des chaînes de caractères (texte)\n- des booléens (vrai ou faux).",
+            "examples": [
+              {
+                "scratch": "mettre [var_1 v] à [6]\nmettre [var_2 v] à [2.4]\nmettre [var_3 v] à [Hello world!]",
+                "python": "var_1 = 6\nvar_2 = 2.4\nvar_3 = \"Hello world!\"\nvar_4 = True"
+              }
+            ],
+            "remarks": [
+              "Le séparateur des nombres décimaux est un point.",
+              "Les chaînes de caractères doivent être entourées par des guillemets \"\" .",
+              "Les variables de type booléen (qui n'existent pas en Scratch) peuvent prendre uniquement les valeurs True (vrai) ou False (faux)."
+            ]
+          }
+        ]
+      },
+      {
+        "category": "Conditionnelle",
+        "summary": "Executer selon certaines conditions",
+        "utility": "Permet d'exécuter des instructions lorsque certaines conditions sont respectées.",
+        "sections": [
+          {
+            "object_name": "CONDI_1BRAN_SECTION",
+            "title": "Conditionnelle à une branche",
+            "description": "Permet d'exécuter des instructions si une condition est vraie.",
+            "model": {
+              "scratch": "si <condition::operators boolean> alors\n\tinstructions::grey\nfin",
+              "python": "if condition:\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [ma_var v] à (mesurer_hauteur::sensing)\nsi < (ma_var) = [3]> alors\n\tcoup::motion\n\tsauter::motion\nfin",
+                "python": "ma_var = mesurer_hauteur()\nif ma_var == 3:\n\tcoup()\n\tsauter()"
+              }
+            ],
+            "remarks": [
+              "[attention] pour tester une égalité on utilise un double égal ==.",
+              "Les instructions dans la branche if (corps) doivent être décalées à l'aide de la touche tabulation."
+            ]
+          },
+          {
+            "object_name": "CONDI_2BRAN_SECTION",
+            "title": "Conditionnelle à deux branches",
+            "description": "Permet d'exécuter des instructions si une condition est vraie et d'autres instructions sinon (si la condition est fausse).",
+            "model": {
+              "scratch": "si <condition::operators boolean> alors\n\tinstructions::grey\nsinon\n\tinstructions::grey\nfin",
+              "python": "if condition:\n\tinstructions \nelse:\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [ma_var v] à (mesurer_hauteur::sensing)\nsi <(ma_var) < [7]> alors\n\ttourner::motion\n\tavancer::motion\nsinon\n\tsauter::motion\n\tcoup::motion\nfin",
+                "python": "ma_var = mesurer_hauteur()\nif ma_var < 7:\n\ttourner()\n\tavancer()\nelse:\n\tsauter()\n\tcoup()"
+              }
+            ],
+            "remarks": [
+              "Les instructions dans les branches if et else (corps) doivent être décalées à l'aide de la touche tabulation."
+            ]
+          },
+          {
+            "object_name": "CONDI_3BRAN_SECTION",
+            "title": "Conditionnelle à trois branches et plus",
+            "description": "Permet d'exécuter des instructions différentes en fonction de différentes conditions.",
+            "model": {
+              "scratch": "si <condition::operators boolean> alors\n\n\tinstructions::grey\nsinon\n\tsi <condition::operators boolean> alors\n\t\tinstructions::grey\n\tsinon\n\t\tinstructions::grey\n\tfin\nfin",
+              "python": "if condition:\n\tinstructions\nelif condition: \n\tinstructions\nelse:\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [ma_var v] à (mesurer_hauteur::sensing)\nsi <(ma_var) = [5]> alors\n\ttourner::motion\nsinon\n\tsi <(ma_var) = [7]> alors\n\t\tavancer::motion\n\t\tsauter::motion\n\tsinon\n\t\tcoup::motion\n\tfin\nfin",
+                "python": "ma_var = mesurer_hauteur()\nif ma_var == 5:\n\ttourner()\nelif ma_var == 7:\n\tavancer()\n\tsauter()\nelse:\n\tcoup()"
+              }
+            ],
+            "remarks": [
+              "Il est possible d'ajouter autant de branches elif que l'on souhaite.",
+              "La branche else n'est pas obligatoire, une conditionnelle peut n'avoir que des branches if et elif.",
+              "Les instructions dans les branches if, elif et else (corps) doivent être décalées à l'aide de la touche tabulation."
+            ]
+          }
+        ]
+      },
+      {
+        "category": "Boucle for",
+        "summary": "Répéter un certain nombre de fois",
+        "utility": "Permet de répéter des instructions un certain nombre de fois.",
+        "sections": [
+          {
+            "object_name": "FOR_SIMPLE_SECTION",
+            "title": "Répétition simple",
+            "description": "Permet de répéter des instructions un certain nombre de fois.",
+            "model": {
+              "scratch": "répéter [nombre] fois\n\tinstructions::grey\nfin",
+              "python": "for _ in range(nombre):\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "répéter [4] fois\n\tsauter::motion\n\tcoup::motion\nfin",
+                "python": "for _ in range(4):\n\tsauter()\n\tcoup()"
+              }
+            ],
+            "remarks": [
+              "Le nombre entre parenthèses dans range(nombre) indique le nombre de répétitions des instructions.",
+              "Les instructions répétées dans la boucle (corps) doivent être décalées à l'aide de la touche tabulation."
+            ]
+          },
+          {
+            "object_name": "FOR_COUNTER_0_SECTION",
+            "title": "Répétition avec compteur (commence à zéro)",
+            "description": "Permet de répéter des instructions un certain nombre de fois tout en mettant à jour automatiquement une variable compteur qui est initialisée à zéro.",
+            "model": {
+              "scratch": "mettre [compteur v] à [0]\nrépéter [nombre] fois\n\tinstuctions::grey\n\tajouter [1] à [compteur v]::#ff8c1a\nfin",
+              "python": "for compteur in range(nombre):\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [compteur v] à [0]\nrépéter [3] fois\n\ttirer(compteur::#ff8c1a)::motion\n\tavancer::motion\n\tajouter [1] à [compteur v]::#ff8c1a\nfin",
+                "python": "for compteur in range(3):\n\ttirer(compteur)\n\tavancer()"
+              }
+            ],
+            "remarks": [
+              "Le nombre entre parenthèses dans range(nombre) indique le nombre de répétitions des instructions.",
+              "La variable compteur est automatiquement initialisée à 0 et automatiquement augmentée de 1 à la fin de chaque tour de boucle (sauf au dernier).",
+              "La variable compteur peut être utilisée dans les instructions répétées dans la boucle."
+            ]
+          },
+          {
+            "object_name": "FOR_COUNTER_N_SECTION",
+            "title": "Répétition avec compteur (ne commence pas à zéro)",
+            "description": "Permet de répéter des instructions un certain nombre de fois tout en mettant à jour automatiquement une variable compteur.",
+            "model": {
+              "scratch": "mettre [compteur v] à [n1]\nrépéter [n2-n1] fois\n\tinstuctions::grey\n\tajouter [1] à [compteur v]::#ff8c1a\nfin",
+              "python": "for compteur in range(n1,n2):\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [compteur v] à [3]\nrépéter [4] fois\n\tsauter_hauteur(compteur::#ff8c1a)::motion\n\tcoup::motion\n\tajouter [1] à [compteur v]::#ff8c1a\nfin",
+                "python": "for compteur in range(3,7):\n\tsauter_hauteur(compteur)\n\tcoup()"
+              }
+            ],
+            "remarks": [
+              "La variable compteur est automatiquement initialisée à n1 (3 dans l'exemple) et automatiquement augmenté de 1 à la fin de chaque tour de boucle (sauf au dernier).",
+              "[attention] les répétitions s'arrêtent lorsque le compteur atteint n2-1 (6 dans l'exemple: 7-1 )."
+            ]
+          }
+        ]
+      },
+      {
+        "category": "Boucle while",
+        "summary": "Répéter selon certaines conditions",
+        "utility": "Permet de répéter des instructions tant que certaines conditions sont respectées.",
+        "sections": [
+          {
+            "object_name": "WHILE_SIMPLE_SECTION",
+            "title": "Répétition tant que ...",
+            "description": "Permet de répéter des instructions tant qu'une condition est vraie.",
+            "model": {
+              "scratch": "répéter jusqu'à ce que <condition::operators boolean>\n\tinstructions::grey\nfin",
+              "python": "while condition:\n\tinstructions"
+            },
+            "examples": [
+              {
+                "scratch": "mettre [h v] à (mesurer::sensing)\nrépéter jusqu'à ce que <(h) = [0]>\n\tsauter::motion\n\tmettre [h v] à (mesurer::sensing)\nfin",
+                "python": "h = mesurer_hauteur() \nwhile h  > 0:\n\tsauter()\n\th = mesurer_hauteur()"
+              }
+            ],
+            "remarks": [
+              "La boucle continue de tourner tant que la condition est vraie et elle s'arrête dès qu'elle devient fausse.",
+              "[attention] en Python la boucle tourne tant que la condition est vraie, en Scratch la boucle s'arrête quand la condition est vraie.",
+              "Les instructions répétées dans la boucle (corps) doivent être décalées à l'aide de la touche tabulation."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "interface": {
+    "buttons_and_panels": [
+      "Guide de démarrage",
+      "Niveaux (onglets 1 à 8, identifiant de partie « Id : »)",
+      "Sauvegarder",
+      "Mémo programmation",
+      "A propos du projet",
+      "Exécuter",
+      "Arrêter",
+      "curseur de vitesse d'exécution (tortue, lièvre)",
+      "console",
+      "éditeur de code",
+      "scène du jeu"
+    ],
+    "assistant_panel": {
+      "name": "Coco",
+      "introduction": "Salut ! Je suis Coco, un assistant numérique qui utilise l'intelligence artificielle.\nClique sur le bouton Demander de l'aide ci-dessous si tu as besoin d'aide pour avancer dans le jeu !\nSuite à une demande d’aide, je ne suis pas immédiatement disponible pour une autre demande pour te laisser le temps de chercher et d’essayer par toi-même.\nIl est possible que mes réponses contiennent des erreurs, en cas de doute sur une explication, n'hésite pas à essayer de vérifier toi-même et si nécessaire à consulter ton enseignant.",
+      "button": "Demander de l'aide",
+      "unavailable_label": "Non disponible",
+      "title": "Besoin d'aide ?"
+    },
+    "console_messages": {
+      "execution_launched": "Exécution lancée",
+      "execution_completed": "Exécution terminée",
+      "execution_stopped": "Exécution arrêtée",
+      "error_format": "Ligne {lineNumber} : {errorMessage}",
+      "game_errors": [
+        "Le nom {name} n'est pas défini",
+        "Impossible d'ouvrir le coffre à cet emplacement",
+        "Vous devez posséder la clé pour ouvrir le coffre",
+        "Impossible de lire un message à cet emplacement",
+        "Impossible d'avancer vers cet emplacement"
+      ],
+      "too_many_lines": "Trop de lignes dans le programme : seulement {maxLine} autorisées.",
+      "syntax_messages": [
+        "Impossible de mettre plusieurs instructions sur une même ligne.",
+        "Il faut utiliser des parenthèses pour appeler une fonction, même si elles sont vides : '%s()'.",
+        "La branche 'else' n'accepte pas de condition.",
+        "Cette structure nécessite un corps. Vérifier le décalage des lignes (indentation).",
+        "Eléments en trop détectés : '%s'.",
+        "L'élément '%s' est invalide en Python. Essayer d'utiliser '%s' à la place.",
+        "L'élément '%s' ne peut pas se trouver en début de ligne.",
+        "Il semble que ces éléments soient inversés: '%s' et '%s'.",
+        "Mauvais élément : utiliser '%s' au lieu de '%s'.",
+        "Pour effectuer une affectation, il faut utiliser un seul caractère '='.",
+        "Pour tester une égalité, il faut utiliser le double égal '=='.",
+        "La destination d'une affectation doit se trouver à gauche de l'opérateur '=' et non à droite.",
+        "L'en-tête de l'instruction '%s' ne doit pas être décalée (indentation) : seul son corps doit l'être.",
+        "Il faut que le '%s' soit décalé (indentation) de la même manière que le 'if'.",
+        "Cette ligne est trop décalée (indentation) par rapport à la précédente.",
+        "Le '%s' ne doit pas être décalé (indentation).",
+        "Le décalage des lignes (indentation) est incohérent."
+      ],
+      "function_errors": [
+        "L'utilisation de la fonction avancer n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction coup n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction detecter_obstacle n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction droite n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction gauche n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction lire_chaine n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction lire_nombre n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction mesurer_hauteur n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction ouvrir n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction sauter n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction sauter_haut n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction sauter_hauteur n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction tirer n'est pas autorisée pour ce niveau.",
+        "L'utilisation de la fonction tourner n'est pas autorisée pour ce niveau.",
+        "La fonction avancer ne prend pas de paramètre.",
+        "La fonction coup ne prend pas de paramètre.",
+        "La fonction detecter_obstacle ne prend pas de paramètre.",
+        "La fonction droite ne prend pas de paramètre.",
+        "La fonction gauche ne prend pas de paramètre.",
+        "La fonction lire_chaine ne prend pas de paramètre.",
+        "La fonction lire_nombre ne prend pas de paramètre.",
+        "La fonction mesurer_hauteur ne prend pas de paramètre.",
+        "La fonction ouvrir ne prend pas de paramètre.",
+        "La fonction sauter ne prend pas de paramètre.",
+        "La fonction sauter_haut ne prend pas de paramètre.",
+        "La fonction sauter_hauteur doit avoir un paramètre.",
+        "La fonction tirer doit avoir un paramètre.",
+        "La fonction tourner ne prend pas de paramètre.",
+        "Le paramètre de la fonction sauter_hauteur doit être un nombre entier compris entre 0 et 5.",
+        "Le paramètre de la fonction tirer doit être un nombre entier compris entre 1 et 9."
+      ]
+    },
+    "game_messages": {
+      "level": "Niveau",
+      "completed": "terminé!",
+      "game_finished": "Jeu terminé!",
+      "level_lost": "Perdu!"
+    }
+  }
+}

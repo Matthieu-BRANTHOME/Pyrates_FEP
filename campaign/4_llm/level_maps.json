@@ -1,0 +1,184 @@
+{
+  "legend": {
+    ".": "vide, ciel (traversable)",
+    ":": "vide, intérieur de grotte (traversable)",
+    "#": "sol (solide, on marche dessus)",
+    "o": "bloc de pierre servant de plateforme (solide)",
+    "=": "pont ou plateforme en bois (solide)",
+    "^": "piques (les toucher fait perdre le niveau)",
+    "T": "tonneau (solide)",
+    "X": "caisse (solide)",
+    "S": "mur de pierre suspendu (solide, on passe dessous)",
+    "U": "pot (solide, se casse avec coup())",
+    "I": "poteau (solide)",
+    "B": "bouteille contenant un message",
+    "K": "clé",
+    "C": "coffre",
+    "N": "noix de coco",
+    "E": "second pirate immobile",
+    "P": "pirate, position de départ"
+  },
+  "general_notes": [
+    "Une case correspond à un bloc du jeu. La première ligne est le haut de la carte, la première colonne le bord gauche.",
+    "Pour les niveaux à éléments aléatoires, la grille montre un tirage possible ; le champ random décrit ce qui change à chaque exécution."
+  ],
+  "levels": [
+    {
+      "level_id": 1,
+      "pirate_facing": "gauche",
+      "ascii": [
+        "...##.............",
+        ".P#####...........",
+        ".o#####...........",
+        "..#####...........",
+        "o..###............",
+        "K..:::...........C",
+        "######=====#######"
+      ],
+      "random": null,
+      "notes": "Carte fixe.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 2,
+      "pirate_facing": "droite",
+      "ascii": [
+        "............K.....",
+        ".PT.T.T.T.T.T.....",
+        "##############....",
+        "::############....",
+        ":::#########::....",
+        ":C:UUUUUUUUU:=====",
+        "#############I~~~I"
+      ],
+      "random": null,
+      "notes": "Carte fixe. Tonneaux à franchir en haut, pots à casser en bas.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 3,
+      "pirate_facing": "droite",
+      "ascii": [
+        "#####..S...S...S...S..",
+        ":::###.....S...S......",
+        ":T:K::.X...S.......X..",
+        ":T:T:..X...S...X...X..",
+        ":T:T:..X.......X...X..",
+        "PT:T:B.X.B.X.B.X.B.X.C",
+        "######################"
+      ],
+      "random": "Hauteur de chacune des 4 piles de caisses (1 à 4) et message de la bouteille qui la précède. Un mur de pierre suspendu au-dessus laisse toujours une seule case libre au sommet de la pile.",
+      "notes": "Deux piles de tonneaux fixes (hauteurs 4 puis 3) à franchir, la clé au sommet de la seconde ; puis 4 piles de caisses, chacune précédée d'une bouteille qui indique sa hauteur ; puis le coffre.",
+      "size": {
+        "cols": 22,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 4,
+      "pirate_facing": "droite",
+      "ascii": [
+        ".....................",
+        ".........PB..........",
+        ".........ooo.........",
+        "........B............",
+        ".......ooo.ooo.......",
+        "..........BK.........",
+        ".....ooo.ooo.ooo.....",
+        "............B........",
+        "...ooo.ooo.ooo.ooo...",
+        "..........B..........",
+        ".ooo.ooo.ooo.ooo.ooo.",
+        "^^^^^^^C.^^^^^^^^^^^^"
+      ],
+      "random": "Emplacement de la clé, du coffre et des bouteilles des étages inférieurs, donc chemin à suivre. La première bouteille est fixe.",
+      "notes": "Pyramide de plateformes sur 5 étages. Chaque bouteille indique la direction (gau ou droi) pour descendre vers la bouteille suivante ; deux pas suffisent pour tomber sur l'étage inférieur. Tomber hors du chemin mène aux piques.",
+      "size": {
+        "cols": 21,
+        "rows": 12
+      }
+    },
+    {
+      "level_id": 5,
+      "pirate_facing": "gauche",
+      "ascii": [
+        "..S..S..S.....S...",
+        "........S..X..S...",
+        "..X..X.....X......",
+        ".===============..",
+        "C...............KP",
+        "===............===",
+        "^^^^^^^^^^^^^^^^^^"
+      ],
+      "random": "Hauteur des 5 piles de caisses de la plateforme supérieure (0 à 2). Un mur de pierre suspendu au-dessus laisse toujours une case libre au sommet de la pile.",
+      "notes": "Le pirate ramasse la clé, monte sur la plateforme supérieure, franchit les 5 piles (espacées de 3 cases) puis redescend sur la plateforme du coffre. Eau puis piques en bas.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 6,
+      "pirate_facing": "droite",
+      "ascii": [
+        "...#######:K::####",
+        "..######:::I:::###",
+        ".#####:::I:I::XX##",
+        ".###:::I:I:I::XX##",
+        ".#:::I:I:I:I::TT##",
+        "P::I:I:I:I:I:CTT##",
+        "#I#I#I#I#I#I######"
+      ],
+      "random": null,
+      "notes": "Carte fixe. Six poteaux de hauteur croissante (0 à 5) dans la grotte, la clé au-dessus du plus haut.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 7,
+      "pirate_facing": "droite",
+      "ascii": [
+        "..................",
+        "..................",
+        "..................",
+        "..................",
+        "........PNNE......",
+        "########I#########",
+        "########I#########"
+      ],
+      "random": null,
+      "notes": "Le pirate reste sur son poteau et tire. 7 séries de noix de coco apparaissent l'une après l'autre (2, 3, 4, 5, 6, 7 puis 8 noix), alternativement à droite puis à gauche, la première noix toujours collée au pirate. Un second pirate se tient derrière la dernière noix de chaque série : le toucher fait perdre le niveau. Après la 7e série, le coffre apparaît deux cases à gauche du pirate, avec un second pirate derrière lui ; il s'ouvre d'un tir, sans clé. La grille montre la configuration initiale.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    },
+    {
+      "level_id": 8,
+      "pirate_facing": "gauche",
+      "ascii": [
+        "###...............",
+        "####.............#",
+        "####...........###",
+        "::##....##....#:#:",
+        ":::#...########:::",
+        ":K:T.P.UUUUUUUUC::",
+        "##################"
+      ],
+      "random": "Solidité du tonneau (1 à 20, affichée sur le tonneau : 11 sur l'image), nombre de pots (1 à 10, le premier toujours à la même place) et donc emplacement du coffre, toujours juste après le dernier pot.",
+      "notes": "Chaque coup de sabre baisse la solidité du tonneau ; à zéro, il est remplacé par de la dynamite qu'on peut traverser, mais un coup dans la dynamite la fait exploser et fait perdre le niveau. Les pots se cassent d'un coup chacun.",
+      "size": {
+        "cols": 18,
+        "rows": 7
+      }
+    }
+  ]
+}

@@ -7,6 +7,8 @@ as part of the experiment on LLM-generated feedback (CONTROL, FREE and CONSTRAIN
 campaign/
   1_pilot/          pilot annotation campaign: coding form and results
   2_full/           full campaign: game assignment, coding form and results
+  3_adjudication/   adjudication of the experts' disagreements: choices handed to the platform, gold standard
+  4_llm/            LLM annotation: context files, rendered prompt, raw responses and results
 data/
   input/
     imported/        raw exports, versioned
@@ -18,7 +20,8 @@ notebooks/
   03_coding_grid_pretest.ipynb      pilot game selection, coding grid pretest, inter-rater analysis
   04_full_campaign.ipynb            full campaign: game assignment and coding handoff
   05_full_campaign_analysis.ipynb   full campaign: inter-rater reliability analysis
-  06_llm_annotation.ipynb           annotation of the rest of the corpus by frontier LLMs
+  06_adjudication.ipynb             adjudication campaign and gold standard
+  07_llm_annotation.ipynb           annotation of the B/C feedback by frontier LLMs, evaluation against the gold standard
 ```
 
 # 1/ Environment Setup
@@ -55,6 +58,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+**API keys (notebook 07 only)**: create a `.env` file at the project root (it is git-ignored)
+with `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` and `TYPESAFE_API_KEY`. Never write a key in a notebook.
+
 5/ **Configure VSCode**
 - Open the project in VSCode
 - Open any notebook (.ipynb file)
@@ -73,7 +79,12 @@ pip install -r requirements.txt
 | `campaign/1_pilot/pilot_result.csv` | pilot annotation results, one row per (game, trace, expert), input of notebook 03 |
 | `campaign/2_full/full_form.json` | coding form used for the full campaign, referenced by notebook 04 |
 | `campaign/2_full/full_form.pdf` | readable bilingual (EN/FR) rendering of `full_form.json`, for review outside the platform |
-| `campaign/2_full/full_result.csv` | full campaign annotation results, one row per (game, trace, expert), input of notebook 05 |
+| `campaign/2_full/full_result.csv` | full campaign annotation results, one row per (game, trace, expert), input of notebooks 05, 06 and 07 |
+| `campaign/3_adjudication/adjudication_result.csv` | adjudication campaign results (standard FEP export), one row per (game, trace, arbiter), input of notebook 06 |
+| `campaign/4_llm/platform_context.json` | export of the FEP webtool: trace labels, details panel rules, FEP level sheets and memo, feedback rendering rules |
+| `campaign/4_llm/game_rules.json` | Pyrates game rules (execution outcomes, control functions, line limits), written for the LLM prompt |
+| `campaign/4_llm/level_maps.json` | ASCII maps of the 8 levels with randomness and dynamics, checked against the game's Tiled maps |
+| `campaign/4_llm/game_interface.json` | student-side texts of the game (level panel, programming memo, interface, assistant panel), extracted from the Pyrates repository |
 
 `data/input/imported/` is versioned so that the notebooks can be replayed from a fresh clone.
 `data/input/cleaned/` and `data/output/` are not: both are rebuilt by running the notebooks.
@@ -84,6 +95,13 @@ pip install -r requirements.txt
 | `data/output/expert_assignment.csv` | notebook 02 | working output, not reused downstream |
 | `data/output/plateau_feedback_sample.csv` | notebook 03 | working output, not reused downstream |
 | `campaign/2_full/full_campaign_assignment.csv` | notebook 04 | assignment handed to the annotation platform |
+| `campaign/3_adjudication/adjudication_assignment.csv` | notebook 06 | games handed to the platform for the adjudication campaign |
+| `campaign/3_adjudication/adjudication_input.csv` | notebook 06 | the two experts' codings of the games to adjudicate (extract of `full_result.csv`), handed to the platform |
+| `campaign/3_adjudication/gold.csv` | notebook 06 | gold standard, one row per feedback, input of notebook 07 |
+| `campaign/4_llm/prompt_<version>.md` | notebook 07 | rendered prompt and sample contexts, for review |
+| `campaign/4_llm/llm_result.csv` | notebook 07 | LLM annotations in the FEP export format |
+| `campaign/4_llm/few_shot_examples.csv` | notebook 07 | trace ids of the few-shot examples of the prompt |
+| `campaign/4_llm/dev_scores.csv` | notebook 07 | dev-set agreement of each prompt version |
 
 # 3/ Execution
 
@@ -139,13 +157,58 @@ Input `campaign/2_full/full_result.csv`. Same inter-rater reliability analysis a
 possible expert pairs rather than always the same two, so the pairing is derived per trace
 instead of assumed fixed. Not runnable until the full campaign's coding is complete.
 
-## 3.6/ Notebook 06: LLM annotation
+## 3.6/ Notebook 06: adjudication and gold standard
 
-Inputs `data/input/cleaned/cleaned_interaction_traces.csv`, `campaign/2_full/full_form.json`
-and `campaign/2_full/full_result.csv`. Annotates the feedback not coded by the experts with
-frontier LLMs, through a prompt that reproduces the annotators' view on the FEP platform and
-includes few-shot examples taken from the experts' gold standard; the rest of the gold standard
-is used to evaluate each model's agreement with the experts.
+Inputs `campaign/2_full/full_form.json`, `campaign/2_full/full_campaign_assignment.csv`,
+`campaign/2_full/full_result.csv` and, once the adjudication campaign is coded,
+`campaign/3_adjudication/adjudication_result.csv`. Each question on which the two experts of a
+feedback disagree becomes a **choice** between their two answers. The two arbiters (`Penny` and
+`Shaquille`, the pilot experts) adjudicate every choice on the FEP platform: they see both original
+answers and pick one of them, without any other possible answer. A feedback enters the gold
+standard when every question has a label (expert agreement, or the same answer picked by both
+arbiters); if the arbiters pick different answers on any question, the feedback is left out.
+
+Disagreement rule, shared with the platform: questions are compared one by one; for the
+multiple-choice questions, the comparison is on the set of ticked codes (order does not matter);
+the free texts of the "other" options are not compared.
+
+FEP assigns whole games. Two files go to the platform:
+
+- `adjudication_assignment.csv`: every game holding at least one choice, assigned to both arbiters, in
+  the format of the full campaign assignment (`game_id`, `group_id`, `n_received`, `expert_1`, `expert_2`);
+- `adjudication_input.csv`: the two experts' codings of every feedback of these games, an extract of
+  `full_result.csv` in the same format.
+
+The adjudication campaign is exported in the standard FEP format (one row per (game, trace, arbiter),
+one column per question) as `adjudication_result.csv`. The notebook checks that every adjudicated
+answer is one of the two experts' answers, reports the agreement between arbiters per question and
+writes `campaign/3_adjudication/gold.csv` (one row per feedback, one column per question,
+`source` = `experts` or `adjudication`).
+
+## 3.7/ Notebook 07: LLM annotation
+
+Inputs `data/input/cleaned/cleaned_interaction_traces.csv`, `campaign/2_full/full_form.json`, the
+four context files of `campaign/4_llm/`, `campaign/2_full/full_result.csv` and
+`campaign/3_adjudication/gold.csv` (notebook 06).
+Annotates the B/C feedback with frontier LLMs (Claude Opus, GPT Sol, Jev), each treated as one
+more annotator. For every feedback, the prompt rebuilds what an expert sees on the FEP platform
+(same trace window, labels and details, feedback cleaned like the platform), plus the game
+knowledge the experts have (rules, maps, level dynamics, student interface and memo). The games coded
+by the experts are split by game into an example pool (few-shot examples, with their gold labels),
+a dev set and a test set; on the test set, the agreement of each model with the experts is compared
+with the agreement between experts (Krippendorff's alpha, as in notebook 03), and per-category F1
+is computed against the gold standard.
+
+`DRY_RUN = True` (default) makes no API call: the notebook renders the contexts, writes
+`campaign/4_llm/prompt_<version>.md` for review and estimates the cost. Raw responses are cached in
+`campaign/4_llm/raw/<model>.jsonl` (key: model, prompt version, trace), so a rerun makes no new call;
+results go to `campaign/4_llm/llm_result.csv` in the FEP export format (`expert_id` = model id).
+
+Workflow once the gold standard exists: tune the prompt on the dev set (`RUN_SPLITS = ["dev"]`,
+`EVAL_SPLIT = "dev"`, bump `PROMPT_VERSION` at each change; the scores of every version are kept in
+`campaign/4_llm/dev_scores.csv`), freeze it, annotate and evaluate the test set once
+(`RUN_SPLITS = ["test"]`, `EVAL_SPLIT = "test"`), then annotate the production set with the batch
+functions.
 
 # 4/ Development Guidelines
 

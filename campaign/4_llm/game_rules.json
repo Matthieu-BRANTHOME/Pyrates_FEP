@@ -1,0 +1,150 @@
+{
+  "execution": [
+    "Le programme Python écrit dans l'éditeur commande le pirate avec les fonctions de contrôle du niveau et les instructions Python standard.",
+    "Avant chaque exécution, le pirate revient à sa position de départ.",
+    "Programme correctement exécuté ou terminant le niveau : le pirate s'arrête là où le programme l'a mené.",
+    "Programme en erreur (syntaxique) ou (trop de lignes) : le programme n'est pas exécuté, le pirate ne bouge pas.",
+    "Programme en erreur (jeu) : le pirate s'arrête là où l'a mené son dernier déplacement avant l'erreur.",
+    "Programme en erreur (sémantique) : erreur Python survenue pendant l'exécution (par exemple « TypeError: 'str' object is not callable » ou « range() takes at least 1 arguments »). Le programme s'exécute jusqu'à la ligne en erreur et le pirate s'arrête là où l'a mené son dernier déplacement. Quand le message est une « SyntaxError », rien n'est exécuté et le pirate ne bouge pas.",
+    "Programme faisant perdre le niveau (piques, explosion d'un tonneau, tir sur un autre pirate) : le pirate meurt et revient au départ du niveau.",
+    "Programme arrêté par l'utilisateur : le pirate s'arrête là où l'a mené son dernier déplacement avant l'arrêt.",
+    "L'élève ne voit à l'écran que le résultat de sa dernière exécution.",
+    "Gauche et droite s'entendent du point de vue de l'élève qui regarde l'écran.",
+    "Pour ramasser la clé, le pirate doit passer sur sa case au cours de l'exécution.",
+    "Quand le nombre de lignes est limité, les lignes de commentaire et les lignes vides comptent."
+  ],
+  "functions": [
+    {
+      "function": "avancer()",
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "effect": "Avance d'une case dans le sens où le pirate est tourné. Si la case d'arrivée n'a pas de sol, il tombe jusqu'au premier bloc solide en dessous : c'est un déplacement normal, sans erreur. Avancer vers un bloc solide ou hors de la carte provoque une erreur de jeu (message « Impossible d'avancer vers cet emplacement »)."
+    },
+    {
+      "function": "gauche()",
+      "levels": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "effect": "Tourne le pirate vers la gauche de la carte, sans le déplacer."
+    },
+    {
+      "function": "droite()",
+      "levels": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "effect": "Tourne le pirate vers la droite de la carte, sans le déplacer."
+    },
+    {
+      "function": "tourner()",
+      "levels": [
+        7
+      ],
+      "effect": "Inverse l'orientation du pirate (gauche devient droite et inversement), sans le déplacer."
+    },
+    {
+      "function": "sauter()",
+      "levels": [
+        2,
+        5
+      ],
+      "effect": "Le pirate monte d'une case puis avance d'une case dans le sens où il est tourné. Si un bloc solide est juste au-dessus de lui, il ne saute pas et reste sur place. Si un bloc solide occupe la case d'arrivée, le saut est interrompu et il revient à sa position. Aucun de ces cas ne provoque d'erreur."
+    },
+    {
+      "function": "sauter_haut()",
+      "levels": [
+        5
+      ],
+      "effect": "Identique à sauter_hauteur(2)."
+    },
+    {
+      "function": "sauter_hauteur(hauteur)",
+      "levels": [
+        3,
+        6
+      ],
+      "effect": "Le pirate monte de « hauteur » cases puis avance d'une case dans le sens où il est tourné. Si un bloc solide se trouve sur la trajectoire verticale ou sur la case d'arrivée, le saut est interrompu et il revient à sa position, sans erreur. Le paramètre doit être un entier entre 0 et 5 ; sauter une hauteur de 0 revient à avancer()."
+    },
+    {
+      "function": "coup()",
+      "levels": [
+        2,
+        8
+      ],
+      "effect": "Donne un coup de sabre sur la case juste devant le pirate. Un bloc cassable (pot, tonneau) est détruit ou perd un point de solidité et devient franchissable une fois détruit. Sur un bloc non cassable, il ne se passe rien, sans erreur."
+    },
+    {
+      "function": "tirer(distance)",
+      "levels": [
+        7
+      ],
+      "effect": "Tire une balle à l'horizontale, dans le sens où le pirate est tourné, sur « distance » cases. Les objets sur la trajectoire (noix de coco, autre pirate) sont détruits. Le paramètre doit être un entier entre 1 et 9."
+    },
+    {
+      "function": "ouvrir()",
+      "levels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8
+      ],
+      "effect": "Ouvre le coffre s'il est sur la case du pirate ou sur la case juste devant lui et si le pirate a la clé. Sinon, erreur de jeu (coffre au mauvais emplacement, ou clé manquante)."
+    },
+    {
+      "function": "lire_nombre()",
+      "levels": [
+        3
+      ],
+      "effect": "Lit le message de la bouteille située sur la case du pirate et renvoie un entier entre 1 et 5. Sans bouteille sur sa case, erreur de jeu."
+    },
+    {
+      "function": "lire_chaine()",
+      "levels": [
+        4
+      ],
+      "effect": "Lit le message de la bouteille située sur la case du pirate et renvoie une chaîne de caractères (au niveau 4 : \"gau\" ou \"droi\"). Sans bouteille sur sa case, erreur de jeu."
+    },
+    {
+      "function": "mesurer_hauteur()",
+      "levels": [
+        5
+      ],
+      "effect": "Renvoie le nombre de blocs solides empilés sur la case juste devant le pirate, en partant de sa hauteur. Renvoie 0 s'il n'y a rien devant lui. La valeur est un entier entre 0 et 2."
+    },
+    {
+      "function": "detecter_obstacle()",
+      "levels": [
+        8
+      ],
+      "effect": "Renvoie True si un bloc solide occupe la case juste devant le pirate, à sa hauteur, sinon False. Le coffre, le tonneau cassé et les pots cassés ne comptent pas comme obstacles. Avancer quand la fonction renvoie True provoque une erreur de jeu."
+    }
+  ],
+  "line_limits": {
+    "description": "Nombre maximal de lignes du programme dans chaque niveau, lignes de commentaire et lignes vides comprises. Le niveau 8 n'a pas de limite.",
+    "by_level": {
+      "1": 10,
+      "2": 14,
+      "3": 14,
+      "4": 14,
+      "5": 18,
+      "6": 4,
+      "7": 5,
+      "8": null
+    }
+  }
+}
