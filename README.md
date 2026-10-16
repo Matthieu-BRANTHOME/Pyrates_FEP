@@ -95,7 +95,7 @@ with `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` and `TYPESAFE_API_KEY`. Never write a
 | `data/output/expert_assignment.csv` | notebook 02 | working output, not reused downstream |
 | `data/output/plateau_feedback_sample.csv` | notebook 03 | working output, not reused downstream |
 | `campaign/2_full/full_campaign_assignment.csv` | notebook 04 | assignment handed to the annotation platform |
-| `campaign/3_adjudication/adjudication_assignment.csv` | notebook 06 | games handed to the platform for the adjudication campaign |
+| `campaign/3_adjudication/adjudication_assignment.csv` | notebook 06 | games to adjudicate, one semicolon-separated list per arbiter |
 | `campaign/3_adjudication/adjudication_input.csv` | notebook 06 | the two experts' codings of the games to adjudicate (extract of `full_result.csv`), handed to the platform |
 | `campaign/3_adjudication/gold.csv` | notebook 06 | gold standard, one row per feedback, input of notebook 07 |
 | `campaign/4_llm/prompt_<version>.md` | notebook 07 | rendered prompt and sample contexts, for review |
@@ -163,10 +163,14 @@ Inputs `campaign/2_full/full_form.json`, `campaign/2_full/full_campaign_assignme
 `campaign/2_full/full_result.csv` and, once the adjudication campaign is coded,
 `campaign/3_adjudication/adjudication_result.csv`. Each question on which the two experts of a
 feedback disagree becomes a **choice** between their two answers. The two arbiters (`Penny` and
-`Shaquille`, the pilot experts) adjudicate every choice on the FEP platform: they see both original
-answers and pick one of them, without any other possible answer. A feedback enters the gold
-standard when every question has a label (expert agreement, or the same answer picked by both
-arbiters); if the arbiters pick different answers on any question, the feedback is left out.
+`Shaquille`, the pilot experts) adjudicate every choice on the FEP platform: seeing both original
+codings (anonymized as expert A and expert B), the arbiter keeps, for each question in disagreement,
+the complete answer of one of the two experts, without mixing them. The arbiter never writes free text: a kept answer comes with the "other"
+text of its expert; for a question in agreement, the two experts' "other" texts are joined by ` / `.
+
+A feedback enters the gold standard when every question has a label (expert agreement, or the same
+answer reached by both arbiters); if the arbiters reach different answers on any question, or an
+answer is neither expert's answer, the feedback is left out.
 
 Disagreement rule, shared with the platform: questions are compared one by one; for the
 multiple-choice questions, the comparison is on the set of ticked codes (order does not matter);
@@ -174,16 +178,16 @@ the free texts of the "other" options are not compared.
 
 FEP assigns whole games. Two files go to the platform:
 
-- `adjudication_assignment.csv`: every game holding at least one choice, assigned to both arbiters, in
-  the format of the full campaign assignment (`game_id`, `group_id`, `n_received`, `expert_1`, `expert_2`);
+- `adjudication_assignment.csv`: one row per arbiter, with every game holding at least one choice as a
+  semicolon-separated list (`expert_id`, `n_games`, `game_ids`), as for a regular campaign;
 - `adjudication_input.csv`: the two experts' codings of every feedback of these games, an extract of
   `full_result.csv` in the same format.
 
 The adjudication campaign is exported in the standard FEP format (one row per (game, trace, arbiter),
-one column per question) as `adjudication_result.csv`. The notebook checks that every adjudicated
-answer is one of the two experts' answers, reports the agreement between arbiters per question and
-writes `campaign/3_adjudication/gold.csv` (one row per feedback, one column per question,
-`source` = `experts` or `adjudication`).
+one column per question, complete coding) as `adjudication_result.csv`. The notebook checks that every
+adjudicated answer is one of the two experts' answers, reports the agreement between arbiters per
+question (same answer kept), and writes `campaign/3_adjudication/gold.csv` (one row per feedback,
+one column per question, `source` = `experts` or `adjudication`).
 
 ## 3.7/ Notebook 07: LLM annotation
 
