@@ -4,6 +4,9 @@ data/input/cleaned/*
 data/output/*
 !data/output/.gitkeep
 
+# HTML exports of executed notebooks, rebuilt on demand
+reports/
+
 # Python
 __pycache__/
 *.py[cod]

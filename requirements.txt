@@ -3,6 +3,7 @@ openpyxl>=3.1
 ipykernel>=6.29
 nbclient>=0.10
 nbstripout>=0.7
+nbconvert>=7.16
 scikit-learn>=1.5
 anthropic>=1.14
 openai>=3.31

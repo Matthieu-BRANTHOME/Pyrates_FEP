@@ -14,6 +14,7 @@ data/
     imported/        raw exports, versioned
     cleaned/          cleaned_interaction_traces.csv, produced by notebook 01, not versioned
   output/            working files produced by notebooks 02 and 03, not versioned
+reports/             HTML exports of executed notebooks, rebuilt on demand, not versioned
 notebooks/
   01_data_cleaning.ipynb            trace cleaning and export in the webtool import format
   02_expert_assignation.ipynb       assignment of the games to the experts
@@ -97,7 +98,7 @@ with `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` and `TYPESAFE_API_KEY`. Never write a
 | `campaign/2_full/full_campaign_assignment.csv` | notebook 04 | assignment handed to the annotation platform |
 | `campaign/3_adjudication/adjudication_assignment.csv` | notebook 06 | games to adjudicate, one semicolon-separated list per arbiter |
 | `campaign/3_adjudication/adjudication_input.csv` | notebook 06 | the two experts' codings of the games to adjudicate (extract of `full_result.csv`), handed to the platform |
-| `campaign/3_adjudication/gold.csv` | notebook 06 | gold standard, one row per feedback, input of notebook 07 |
+| `campaign/3_adjudication/gold.csv` | notebook 06 | gold standard, one row per feedback, one label per question (empty when the arbiters disagree), input of notebook 07 |
 | `campaign/4_llm/prompt_<version>.md` | notebook 07 | rendered prompt and sample contexts, for review |
 | `campaign/4_llm/llm_result.csv` | notebook 07 | LLM annotations in the FEP export format |
 | `campaign/4_llm/few_shot_examples.csv` | notebook 07 | trace ids of the few-shot examples of the prompt |
@@ -110,6 +111,15 @@ run them in numerical order, either from VSCode with "Run All", or headless:
 
 ```bash
 jupyter execute --inplace notebooks/01_data_cleaning.ipynb notebooks/02_expert_assignation.ipynb notebooks/04_full_campaign.ipynb
+```
+
+To read or share the results of a notebook without Jupyter, export it as an HTML page: the
+notebook is run from a fresh kernel and written to `reports/` without its code cells (tables,
+outputs and markdown only). `reports/` is not versioned; rebuild a page whenever its notebook or
+its inputs change.
+
+```bash
+jupyter nbconvert --to html --execute --no-input notebooks/05_full_campaign_analysis.ipynb --output-dir reports
 ```
 
 ## 3.1/ Notebook 01: trace cleaning
@@ -152,10 +162,20 @@ coding form `campaign/2_full/full_form.json`. Output of the coding step:
 
 ## 3.5/ Notebook 05: full campaign, results analysis
 
-Input `campaign/2_full/full_result.csv`. Same inter-rater reliability analysis as the pilot
-(notebook 03, part 3), generalized to 8 experts: each trace is annotated by one of several
-possible expert pairs rather than always the same two, so the pairing is derived per trace
-instead of assumed fixed. Not runnable until the full campaign's coding is complete.
+Inputs `campaign/2_full/full_form.json`, `campaign/2_full/full_campaign_assignment.csv` and
+`campaign/2_full/full_result.csv`. Inter-rater reliability of the full campaign: each feedback is
+coded by two experts, but the pair changes from game to game, so agreement is measured with
+Krippendorff's alpha, described with the Landis and Koch scale, with 95% confidence intervals
+from a bootstrap over games. Games not yet coded by both experts are reported and left out.
+One measure per item feeds the summary table:
+
+- resolution stage: ordinal alpha (exact agreement, nominal alpha, per-stage specific agreement and
+  confusion matrix as details);
+- invalidity: alpha on valid / invalid (`R0-NONE` or not), with the specific agreement on each
+  answer, the feedback flagged by one or both experts, the whole-answer MASI alpha and per-code counts;
+- content and instructions: whole-answer MASI alpha, nature of the disagreements (one answer
+  contained in the other, single differing code) and, per code, counts, positive specific agreement
+  and nominal alpha for codes in at least 5% of the codings.
 
 ## 3.6/ Notebook 06: adjudication and gold standard
 
@@ -168,9 +188,10 @@ codings (anonymized as expert A and expert B), the arbiter keeps, for each quest
 the complete answer of one of the two experts, without mixing them. The arbiter never writes free text: a kept answer comes with the "other"
 text of its expert; for a question in agreement, the two experts' "other" texts are joined by ` / `.
 
-A feedback enters the gold standard when every question has a label (expert agreement, or the same
-answer reached by both arbiters); if the arbiters reach different answers on any question, or an
-answer is neither expert's answer, the feedback is left out.
+The gold standard is built question by question: a question gets its label from the experts'
+agreement or from the same answer reached by both arbiters; it stays empty when the arbiters reach
+different answers or an answer is neither expert's answer, while the other questions of the feedback
+keep their labels (`complete` tells whether every question of a feedback has a label).
 
 Disagreement rule, shared with the platform: questions are compared one by one; for the
 multiple-choice questions, the comparison is on the set of ticked codes (order does not matter);
@@ -187,7 +208,7 @@ The adjudication campaign is exported in the standard FEP format (one row per (g
 one column per question, complete coding) as `adjudication_result.csv`. The notebook checks that every
 adjudicated answer is one of the two experts' answers, reports the agreement between arbiters per
 question (same answer kept), and writes `campaign/3_adjudication/gold.csv` (one row per feedback,
-one column per question, `source` = `experts` or `adjudication`).
+one column per question, `complete` and `source` = `experts` or `adjudication`).
 
 ## 3.7/ Notebook 07: LLM annotation
 
@@ -199,9 +220,16 @@ more annotator. For every feedback, the prompt rebuilds what an expert sees on t
 (same trace window, labels and details, feedback cleaned like the platform), plus the game
 knowledge the experts have (rules, maps, level dynamics, student interface and memo). The games coded
 by the experts are split by game into an example pool (few-shot examples, with their gold labels),
-a dev set and a test set; on the test set, the agreement of each model with the experts is compared
-with the agreement between experts (Krippendorff's alpha, as in notebook 03), and per-category F1
-is computed against the gold standard.
+a dev set and a test set (complete gold feedback only are used as examples). The evaluation treats
+each model as one more annotator: with the measures of notebook 05 (per item and per code), its
+agreement with each expert is compared with the agreement between the experts, and the model is at
+expert level on a measure when the lower bound of the 95% bootstrap interval (over games) of the
+difference is above `NONINF_MARGIN` (-0.10, fixed before the test set is evaluated); codes in fewer
+than 5% of the expert codings are not assessable. Each model is also compared with the gold standard
+with one measure per item, the macro-F1 (mean F1 of the item's categories found in at least 5% of the
+gold labels), completed by per-category scores and the detection of invalid feedback. Secondary
+analyses: coding tendencies of the models, agreement between the models and calibration of Jev's
+probabilities.
 
 `DRY_RUN = True` (default) makes no API call: the notebook renders the contexts, writes
 `campaign/4_llm/prompt_<version>.md` for review and estimates the cost. Raw responses are cached in
