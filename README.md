@@ -173,9 +173,11 @@ One measure per item feeds the summary table:
   confusion matrix as details);
 - invalidity: alpha on valid / invalid (`R0-NONE` or not), with the specific agreement on each
   answer, the feedback flagged by one or both experts, the whole-answer MASI alpha and per-code counts;
-- content and instructions: whole-answer MASI alpha, nature of the disagreements (one answer
-  contained in the other, single differing code) and, per code, counts, positive specific agreement
-  and nominal alpha for codes in at least 5% of the codings.
+- content and instructions: pooled binary alpha over the codes (each code ticked or not is one
+  decision; `I0-NONE` left out, since it is redundant with the other instruction codes), with the
+  mean of the per-code alphas and the whole-answer MASI alpha for comparison, the nature of the
+  disagreements (identical, nested, overlapping or disjoint answers) and, per code, counts, positive
+  specific agreement and nominal alpha for codes in at least 5% of the codings.
 
 ## 3.6/ Notebook 06: adjudication and gold standard
 
